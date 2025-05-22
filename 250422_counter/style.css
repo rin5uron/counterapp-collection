@@ -78,9 +78,6 @@ h1 {
   -moz-appearance: none;
  }
 
- 
-
-
 .action-btn:hover {
   opacity: 0.9;
 }
@@ -162,6 +159,7 @@ h1 {
 
 /* リセットボタン */
 .reset-btn {
+  color: #555;
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 20px;
@@ -229,7 +227,6 @@ h1 {
 }
 
 /* メッセージスタイル */
-
 .message {
   margin-top: 30px;
   font-size: 14px;
@@ -239,29 +236,78 @@ h1 {
   border-top: none;
 }
 
-
-/* CSSでスマホ版のみ適用するスタイル */
+/* モバイル向け最適化 */
 @media screen and (max-width: 768px) {
-  /* 折り返しポイントの前後に改行を入れる */
-  .break-point {
-    display: block;
-    margin-bottom: 5px; /* 必要に応じて調整 */
+  body {
+    min-height: 100vh; /* ビューポートの高さを最小値として設定 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .container {
+    padding: 15px 10px; /* 余白をさらに減らす */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box; /* パディングを含めた高さ計算 */
   }
   
-  /* 折り返し後のテキストのインデントを調整（必要に応じて） */
-  .break-point + * {
-    margin-left: 1em; /* インデントの量を調整 */
+  h1 {
+    font-size: 22px;
+    margin-bottom: 5px;
   }
+  
+  .caption {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 5px;
+  }
+  
+  #counter {
+    font-size: 60px;
+    width: 110px;
+    height: 110px;
+    line-height: 110px;
+  }
+  
+  .action-btn {
+    width: 90px;
+    height: 90px;
+    padding: 5px 10px;
+  }
+  
+  .explanation {
+    padding: 10px;
+    margin-top: 15px;
+    width: 90%;
+  }
+  
+  .text {
+    font-size: 12px;
+  }
+  
+  .icon {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .message {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+  
   .dot-break::before {
     content: '';
     display: block;
     height: 0;
   }
+  
   .explanation{
-    width: 85%;
+    width: 90%; /* モバイルでは幅を広げる */
   }
 }
-
 
 /* PCなど大きい画面では通常通り表示 */
 @media screen and (min-width: 769px) {
