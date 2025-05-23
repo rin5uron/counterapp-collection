@@ -115,6 +115,7 @@ h1 {
 .plus-btn:active {
   background-color: #ebc0b3;  /* プラスボタンなら */
   transform: scale(0.95);
+  border-radius: 12px;  /* バグ防止のため再設定 */
 }
 /* マイナスボタンスタイル */
 .minus-btn {
@@ -124,6 +125,7 @@ h1 {
 .minus-btn:active {
   background-color: #b9c6cd;
   transform: scale(0.95);
+  border-radius: 12px;  /* バグ防止のため再設定 */
 }
 
 
@@ -164,10 +166,12 @@ h1 {
   border: 1px solid #ddd;
   border-radius: 20px;
   padding: 8px 20px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   cursor: pointer;
   font-size: 16px;
   transition: all 0.3s ease;
+  width: 100px; /* アクションボタンと同じ幅に */
+  margin: 0 auto;
 }
 
 .reset-btn:hover {
@@ -187,7 +191,6 @@ h1 {
   flex-direction: column; /* 縦方向に配置 */
   /* justify-content: center;
   align-items: center; */
-  width: 80%;
 }
 
 
@@ -239,30 +242,35 @@ h1 {
 /* モバイル向け最適化 */
 @media screen and (max-width: 768px) {
   body {
-    min-height: 100vh; /* ビューポートの高さを最小値として設定 */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    min-height: 100vh;
   }
 
   .container {
-    padding: 15px 10px; /* 余白をさらに減らす */
-    height: 100vh;
+    padding: 15px 10px;
+    height: auto; /* 高さを自動調整に変更 */
+    max-height: 100vh; /* 最大高さを画面いっぱいに */
+    margin: 0 auto; /* 中央揃え */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    box-sizing: border-box; /* パディングを含めた高さ計算 */
+    justify-content: flex-start; /* 上から配置 */
+    box-sizing: border-box;
   }
   
   h1 {
     font-size: 22px;
     margin-bottom: 5px;
+    margin-top: 0; /* 上の余白を削除 */
   }
   
   .caption {
     font-size: 12px;
-    line-height: 1.4;
+    line-height: 1.3;
     margin-bottom: 5px;
+    margin-top: 0; /* 上の余白を削除 */
+  }
+  
+  .counter-container {
+    margin: 10px 0;
   }
   
   #counter {
@@ -272,16 +280,27 @@ h1 {
     line-height: 110px;
   }
   
+  .buttons-container {
+    gap: 15px; /* ボタン間の隙間を調整 */
+    margin-bottom: 10px;
+  }
+  
   .action-btn {
-    width: 90px;
+    width: 90px; /* ボタンサイズ調整 */
     height: 90px;
-    padding: 5px 10px;
+    padding: 5px;
+  }
+  
+  .reset-btn {
+    width: 100px; /* アクションボタンと同じ幅 */
+    margin: 0 auto 10px; /* 中央揃えと下マージン */
+    padding: 8px 0; /* 左右の余白を削除 */
   }
   
   .explanation {
     padding: 10px;
-    margin-top: 15px;
-    width: 90%;
+    margin: 10px auto; /* 上下のマージンを均等に */
+    width: 70%; /* PC版と同じ幅 */
   }
   
   .text {
@@ -295,6 +314,7 @@ h1 {
   
   .message {
     margin-top: 10px;
+    margin-bottom: 5px; /* 下の余白を追加 */
     font-size: 12px;
   }
   
@@ -302,10 +322,6 @@ h1 {
     content: '';
     display: block;
     height: 0;
-  }
-  
-  .explanation{
-    width: 90%; /* モバイルでは幅を広げる */
   }
 }
 
@@ -316,6 +332,6 @@ h1 {
   }
 
   .explanation{
-    width: 65%;
+    width: 80%;
   }
 }
