@@ -166,12 +166,11 @@ h1 {
   border: 1px solid #ddd;
   border-radius: 20px;
   padding: 8px 20px;
-  margin-bottom: 15px;
   cursor: pointer;
   font-size: 16px;
   transition: all 0.3s ease;
   width: 100px; /* アクションボタンと同じ幅に */
-  margin: 0 auto;
+  margin: 0 auto 20px auto; /* 下に40pxの余白を追加 */
 }
 
 .reset-btn:hover {

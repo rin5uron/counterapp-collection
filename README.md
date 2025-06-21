@@ -56,7 +56,7 @@ JavaScriptの学習と、UI/UX設計の実践を目的に、複数のテーマ�
 | HTML / CSS       | 基本構造とスタイル定義、セマンティックなマークアップ                      |
 | JavaScript       | イベント処理・アニメーション・カウント制御など、UIに反応する機能の実装     |
 | Vercel           | ホスティング・URL共有・スマホ実機での動作確認                              |
-| 開発環境         | Cursor（GitHub連携）、ローカルでのVSCode使用                                 |
+| 開発環境         | Cursor（GitHub連携）、MacOS                              |
 | 実機テスト       | iPhone（Safari）とMac（Chrome）でUIの見え方や挙動を確認                      |
 | Git / GitHub     | ファイルバージョン管理、仕様書・ログの整理                                 |
 
