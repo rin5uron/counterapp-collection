@@ -4,7 +4,7 @@ const countDisplay = document.getElementById('count');
 let count = 0;
 
 const triggers1 = [
-  "私のこと思い出したら<br>このボタン押してね？",
+  "私のこと思い出したら<br>このボタン押してね！",
 ];
 
 const messages1 = [
@@ -19,6 +19,7 @@ const messages1 = [
   "すき♡",
   "りんご食べよ〜",
   "お散歩しに行こ〜",
+
 ];
 
 // ランダムなインデックスを取得する関数
