@@ -53,6 +53,18 @@ mainButton.addEventListener("click", function() {
   if (count % 22 === 0 && count !== 0) {
     specialMessageElement.innerHTML = "✨このメッセージの答えを教えてね！✨";
     specialMessageElement.style.display = "block";
+
+    // ボタンを一時的に無効化
+    mainButton.disabled = true;
+    mainButton.style.opacity = "0.5";
+    mainButton.style.cursor = "not-allowed";
+
+    // 2.5秒後にボタンを再び有効化
+    setTimeout(function() {
+      mainButton.disabled = false;
+      mainButton.style.opacity = "1";
+      mainButton.style.cursor = "pointer";
+    }, 2500);
   } else {
     specialMessageElement.style.display = "none";
   }
