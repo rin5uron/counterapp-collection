@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title></title>
   <style>
     body {
@@ -129,6 +130,67 @@
       50% {
         transform: scale(1.02);
         box-shadow: 0 0 20px rgba(212, 181, 160, 0.6), 0 0 30px rgba(232, 213, 196, 0.4);
+      }
+    }
+
+    /* スマホ対応 */
+    @media (max-width: 480px) {
+      body {
+        padding: 16px;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+      }
+
+      .card {
+        padding: 28px 20px 20px;
+        max-width: 100%;
+        width: 100%;
+        border-radius: 16px;
+      }
+
+      #mainButton {
+        padding: 18px 36px;
+        font-size: 17px;
+        min-height: 60px;
+        width: 100%;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      #mainButton:active {
+        transform: scale(0.96);
+      }
+
+      #message {
+        font-size: 18px;
+        min-height: 4em;
+        margin-bottom: 20px;
+      }
+
+      #specialMessage {
+        font-size: 17px;
+        padding: 14px 18px;
+      }
+
+      .counter {
+        font-size: 14px;
+        margin-top: 12px;
+      }
+    }
+
+    /* 小さいスマホ対応 */
+    @media (max-width: 360px) {
+      .card {
+        padding: 24px 16px 16px;
+      }
+
+      #mainButton {
+        padding: 16px 28px;
+        font-size: 16px;
+      }
+
+      #message {
+        font-size: 16px;
       }
     }
   </style>
