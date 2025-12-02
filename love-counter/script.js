@@ -4,7 +4,7 @@ const countDisplay = document.getElementById('count');
 let count = 0;
 
 const triggers1 = [
-  "私のこと思い出したらこのボタン押してね？",
+  "私のこと思い出したら<br>このボタン押してね？",
 ];
 
 const messages1 = [
@@ -16,6 +16,9 @@ const messages1 = [
   "いま何してるの？",
   "いまお風呂入ってる、いそがしい",
   "おなかすいた！飯テロしてきて？",
+  "すき♡",
+  "りんご食べよ〜",
+  "お散歩しに行こ〜",
 ];
 
 // ランダムなインデックスを取得する関数
@@ -24,7 +27,7 @@ function getRandomIndex(array) {
 }
 
 // 初期表示：ランダムなボタンテキストを設定
-mainButton.textContent = triggers1[getRandomIndex(triggers1)];
+mainButton.innerHTML = triggers1[getRandomIndex(triggers1)];
 
 // ボタンクリック時の処理
 mainButton.addEventListener("click", function() {
@@ -32,9 +35,9 @@ mainButton.addEventListener("click", function() {
   countDisplay.textContent = count;
 
   // ランダムなメッセージを表示
-  message.textContent = messages1[getRandomIndex(messages1)];
+  message.innerHTML = messages1[getRandomIndex(messages1)];
 
   // 次のボタンテキストをランダムに設定
-  mainButton.textContent = triggers1[getRandomIndex(triggers1)];
+  mainButton.innerHTML = triggers1[getRandomIndex(triggers1)];
 });
   
