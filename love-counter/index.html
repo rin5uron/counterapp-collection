@@ -48,6 +48,8 @@
       transition: all 0.2s ease;
       box-shadow: 0 4px 12px rgba(212, 181, 160, 0.3);
       letter-spacing: 0.5px;
+      white-space: normal;
+      line-height: 1.5;
     }
 
     #mainButton:hover {
@@ -105,6 +107,30 @@
       font-weight: 500;
       letter-spacing: 0.3px;
     }
+
+    #specialMessage {
+      display: none;
+      font-size: 16px;
+      font-weight: 600;
+      color: #d4b5a0;
+      margin-bottom: 12px;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, #fff9f5 0%, #faf8f5 100%);
+      border-radius: 12px;
+      border: 2px solid #e8d5c4;
+      animation: sparkle 1.5s ease-in-out infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(212, 181, 160, 0.3);
+      }
+      50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 20px rgba(212, 181, 160, 0.6), 0 0 30px rgba(232, 213, 196, 0.4);
+      }
+    }
   </style>
 </head>
 <body>
@@ -112,8 +138,8 @@
 
     <button id="mainButton"></button>
     <p id="message"></p>
-
     <div class="counter">
+      <p id="specialMessage"></p>
       私のこと好き度：<span id="count">0</span> %
     </div>
   </div>
