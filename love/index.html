@@ -5,8 +5,8 @@
   <title>さみしくなったら押してねボタン</title>
   <style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #ffe6f2;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+      background: linear-gradient(135deg, #f8f6f3 0%, #faf8f5 50%, #fcfbf9 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -16,71 +16,94 @@
     }
 
     .card {
-      background: #fff;
-      padding: 24px 20px 20px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-      max-width: 320px;
+      background: #fdfcfb;
+      padding: 32px 24px 24px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      max-width: 340px;
       width: 90%;
       text-align: center;
+      border: 1px solid #f0ebe5;
     }
 
     h1 {
-      font-size: 20px;
-      margin-bottom: 16px;
-      line-height: 1.4;
+      font-size: 22px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      color: #5a4a3a;
+      font-weight: 600;
+      letter-spacing: 0.5px;
     }
 
     #mainButton {
       border: none;
       border-radius: 999px;
-      padding: 14px 28px;
+      padding: 16px 32px;
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 600;
       cursor: pointer;
-      background: #ff8ac2;
-      color: white;
-      margin-bottom: 16px;
-      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
-      box-shadow: 0 4px 10px rgba(255, 55, 155, 0.35);
+      background: linear-gradient(135deg, #e8d5c4 0%, #d4b5a0 100%);
+      color: #ffffff;
+      margin-bottom: 20px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(212, 181, 160, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    #mainButton:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(212, 181, 160, 0.35);
+      background: linear-gradient(135deg, #ebd9c9 0%, #d8b9a5 100%);
     }
 
     #mainButton:active {
-      transform: translateY(2px) scale(0.98);
-      box-shadow: 0 2px 5px rgba(255, 55, 155, 0.25);
-      opacity: 0.9;
+      transform: translateY(0px) scale(0.98);
+      box-shadow: 0 2px 8px rgba(212, 181, 160, 0.25);
     }
 
     #message {
-      min-height: 3em;
-      font-size: 16px;
-      margin-bottom: 12px;
-      line-height: 1.5;
-      color: #444;
+      min-height: 3.5em;
+      font-size: 17px;
+      margin-bottom: 16px;
+      line-height: 1.6;
+      color: #5a4a3a;
+      font-weight: 500;
+      letter-spacing: 0.3px;
     }
 
     #copyButton {
-      border: none;
-      background: #ffe6f2;
-      color: #ff4a9b;
+      border: 1px solid #e8d5c4;
+      background: #f8f6f3;
+      color: #a08570;
       border-radius: 999px;
-      padding: 8px 16px;
+      padding: 10px 20px;
       font-size: 13px;
+      font-weight: 600;
       cursor: pointer;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+      letter-spacing: 0.5px;
+    }
+
+    #copyButton:hover {
+      background: #f0ebe5;
+      transform: translateY(-1px);
     }
 
     #copyStatus {
       font-size: 12px;
-      color: #888;
+      color: #999888;
       min-height: 1em;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      font-weight: 500;
     }
 
     .counter {
-      margin-top: 4px;
-      font-size: 12px;
-      color: #999;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #999888;
+      font-weight: 500;
+      letter-spacing: 0.3px;
     }
   </style>
 </head>
