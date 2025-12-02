@@ -2,49 +2,35 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>りんちゃんボタン</title>
+  <title></title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
-      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+      background: linear-gradient(135deg, #f8f6f3 0%, #faf8f5 50%, #fcfbf9 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
       margin: 0;
-      position: relative;
-    }
-
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(220, 20, 60, 0.1) 0%, transparent 70%);
-      pointer-events: none;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.98);
+      background: #fdfcfb;
       padding: 32px 24px 24px;
       border-radius: 20px;
-      box-shadow: 0 12px 40px rgba(220, 20, 60, 0.3), 0 0 80px rgba(220, 20, 60, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       max-width: 340px;
       width: 90%;
       text-align: center;
-      border: 1px solid rgba(220, 20, 60, 0.2);
-      position: relative;
-      z-index: 1;
+      border: 1px solid #f0ebe5;
     }
 
     h1 {
       font-size: 22px;
       margin-bottom: 20px;
       line-height: 1.5;
-      color: #1a1a1a;
+      color: #5a4a3a;
       font-weight: 600;
       letter-spacing: 0.5px;
     }
@@ -56,42 +42,23 @@
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
-      background: linear-gradient(135deg, #dc143c 0%, #c71f37 100%);
-      color: white;
+      background: linear-gradient(135deg, #e8d5c4 0%, #d4b5a0 100%);
+      color: #ffffff;
       margin-bottom: 20px;
-      transition: all 0.3s ease;
-      box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4), 0 0 30px rgba(220, 20, 60, 0.2);
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(212, 181, 160, 0.3);
       letter-spacing: 0.5px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    #mainButton::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
     }
 
     #mainButton:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(220, 20, 60, 0.5), 0 0 40px rgba(220, 20, 60, 0.3);
+      box-shadow: 0 6px 16px rgba(212, 181, 160, 0.35);
+      background: linear-gradient(135deg, #ebd9c9 0%, #d8b9a5 100%);
     }
 
     #mainButton:active {
-      transform: translateY(1px) scale(0.98);
-      box-shadow: 0 4px 15px rgba(220, 20, 60, 0.35);
-    }
-
-    #mainButton:active::before {
-      width: 300px;
-      height: 300px;
+      transform: translateY(0px) scale(0.98);
+      box-shadow: 0 2px 8px rgba(212, 181, 160, 0.25);
     }
 
     #message {
@@ -99,15 +66,15 @@
       font-size: 17px;
       margin-bottom: 16px;
       line-height: 1.6;
-      color: #2d2d2d;
+      color: #5a4a3a;
       font-weight: 500;
       letter-spacing: 0.3px;
     }
 
     #copyButton {
-      border: 1px solid #dc143c;
-      background: rgba(220, 20, 60, 0.05);
-      color: #c71f37;
+      border: 1px solid #e8d5c4;
+      background: #f8f6f3;
+      color: #a08570;
       border-radius: 999px;
       padding: 10px 20px;
       font-size: 13px;
@@ -119,13 +86,13 @@
     }
 
     #copyButton:hover {
-      background: rgba(220, 20, 60, 0.1);
+      background: #f0ebe5;
       transform: translateY(-1px);
     }
 
     #copyStatus {
       font-size: 12px;
-      color: #666;
+      color: #999888;
       min-height: 1em;
       margin-bottom: 8px;
       font-weight: 500;
@@ -134,7 +101,7 @@
     .counter {
       margin-top: 8px;
       font-size: 13px;
-      color: #666;
+      color: #999888;
       font-weight: 500;
       letter-spacing: 0.3px;
     }
@@ -142,7 +109,7 @@
 </head>
 <body>
   <div class="card">
-    <h1>私のこと思い出したら<br>このボタン押してね？</h1>
+    <h1>私のこと思い出したら<br>このボタンを押してね！</h1>
 
     <button id="mainButton"></button>
 
