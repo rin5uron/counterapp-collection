@@ -48,6 +48,7 @@ JavaScriptの学習と、UI/UX設計の実践を目的に、複数のテーマ�
 
 - **私のこと好き？ボタン**
   - [📄 完成URL（Phase1）](https://love-counter-git-phase1-rs-projects-9c94598c.vercel.app/)
+  - [📄 完成URL（Phase2 - 最新版）](https://love-counter-git-phase2-rs-projects-9c94598c.vercel.app/)
   - [📄 README（仕様書）](./love-counter/readme.md)
   - [🎨 デザインコンセプト](./love-counter/DESIGN.md)
   - [📋 プロジェクトフェーズ計画](./PROJECT_PHASES.md)
