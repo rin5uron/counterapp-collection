@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title></title>
+  <title>私のこと好き？</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
-      background: linear-gradient(135deg, #f8f6f3 0%, #faf8f5 50%, #fcfbf9 100%);
+      background: #F5EBE0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -17,51 +17,68 @@
     }
 
     .card {
-      background: #fdfcfb;
+      background: #ffffff;
       padding: 32px 24px 24px;
       border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       max-width: 340px;
       width: 90%;
       text-align: center;
-      border: 1px solid #f0ebe5;
+      border: 1px solid rgba(232, 155, 155, 0.2);
     }
 
     h1 {
       font-size: 22px;
       margin-bottom: 20px;
       line-height: 1.5;
-      color: #5a4a3a;
+      color: #8B7355;
       font-weight: 600;
       letter-spacing: 0.5px;
     }
 
     #mainButton {
       border: none;
-      border-radius: 999px;
-      padding: 16px 32px;
-      font-size: 16px;
-      font-weight: 600;
+      background: none;
       cursor: pointer;
-      background: linear-gradient(135deg, #e8d5c4 0%, #d4b5a0 100%);
-      color: #ffffff;
+      padding: 0;
       margin-bottom: 20px;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(212, 181, 160, 0.3);
-      letter-spacing: 0.5px;
-      white-space: normal;
-      line-height: 1.5;
+      transition: all 0.3s ease;
+      width: 150px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     #mainButton:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(212, 181, 160, 0.35);
-      background: linear-gradient(135deg, #ebd9c9 0%, #d8b9a5 100%);
+      transform: translateY(-5px);
+      filter: drop-shadow(0 10px 20px rgba(232, 155, 155, 0.3));
     }
 
     #mainButton:active {
-      transform: translateY(0px) scale(0.98);
-      box-shadow: 0 2px 8px rgba(212, 181, 160, 0.25);
+      transform: translateY(0px) scale(0.95);
+    }
+
+    #mainButton svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* リンゴのホバー効果 */
+    #mainButton .apple-body {
+      transition: fill 0.3s ease;
+    }
+
+    #mainButton:hover .apple-body {
+      fill: #f0a8a8;
+    }
+
+    /* ボタンテキストのスタイル */
+    #mainButton .button-text {
+      font-size: 22px;
+      font-weight: bold;
+      fill: #8B7355;
+      text-anchor: middle;
     }
 
     #message {
@@ -69,15 +86,15 @@
       font-size: 17px;
       margin-bottom: 16px;
       line-height: 1.6;
-      color: #5a4a3a;
+      color: #8B7355;
       font-weight: 500;
       letter-spacing: 0.3px;
     }
 
     #copyButton {
-      border: 1px solid #e8d5c4;
-      background: #f8f6f3;
-      color: #a08570;
+      border: 1px solid #E89B9B;
+      background: #F5EBE0;
+      color: #8B7355;
       border-radius: 999px;
       padding: 10px 20px;
       font-size: 13px;
@@ -89,13 +106,14 @@
     }
 
     #copyButton:hover {
-      background: #f0ebe5;
+      background: #E89B9B;
+      color: #ffffff;
       transform: translateY(-1px);
     }
 
     #copyStatus {
       font-size: 12px;
-      color: #999888;
+      color: #8B7355;
       min-height: 1em;
       margin-bottom: 8px;
       font-weight: 500;
@@ -104,7 +122,7 @@
     .counter {
       margin-top: 8px;
       font-size: 13px;
-      color: #999888;
+      color: #8B7355;
       font-weight: 500;
       letter-spacing: 0.3px;
     }
@@ -113,23 +131,23 @@
       display: none;
       font-size: 16px;
       font-weight: 600;
-      color: #d4b5a0;
+      color: #8B7355;
       margin-bottom: 12px;
       padding: 12px 16px;
-      background: linear-gradient(135deg, #fff9f5 0%, #faf8f5 100%);
+      background: linear-gradient(135deg, #F5EBE0 0%, #ffffff 100%);
       border-radius: 12px;
-      border: 2px solid #e8d5c4;
+      border: 2px solid #E89B9B;
       animation: sparkle 1.5s ease-in-out infinite;
     }
 
     @keyframes sparkle {
       0%, 100% {
         transform: scale(1);
-        box-shadow: 0 0 10px rgba(212, 181, 160, 0.3);
+        box-shadow: 0 0 10px rgba(232, 155, 155, 0.3);
       }
       50% {
         transform: scale(1.02);
-        box-shadow: 0 0 20px rgba(212, 181, 160, 0.6), 0 0 30px rgba(232, 213, 196, 0.4);
+        box-shadow: 0 0 20px rgba(232, 155, 155, 0.5), 0 0 30px rgba(232, 155, 155, 0.3);
       }
     }
 
@@ -149,16 +167,18 @@
       }
 
       #mainButton {
-        padding: 18px 36px;
-        font-size: 17px;
-        min-height: 60px;
-        width: 100%;
+        width: 140px;
+        height: 140px;
         -webkit-tap-highlight-color: transparent;
         touch-action: manipulation;
       }
 
       #mainButton:active {
-        transform: scale(0.96);
+        transform: scale(0.9);
+      }
+
+      #mainButton .button-text {
+        font-size: 20px;
       }
 
       #message {
@@ -185,8 +205,12 @@
       }
 
       #mainButton {
-        padding: 16px 28px;
-        font-size: 16px;
+        width: 120px;
+        height: 120px;
+      }
+
+      #mainButton .button-text {
+        font-size: 18px;
       }
 
       #message {
@@ -197,8 +221,31 @@
 </head>
 <body>
   <div class="card">
+<p id="triggerText">私のこと好き？</p>
+    <button id="mainButton">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          
 
-    <button id="mainButton"></button>
+          <!-- リンゴの本体 -->
+          <path d="
+            M 50,25
+            C 30,25 20,35 20,50
+            C 20,65 30,80 45,85
+            Q 50,86 50,86
+            C 70,80 80,65 80,50
+            C 80,35 70,25 50,25 Z
+          " fill="#e57373" />
+          <!-- リンゴの茎 -->
+          <path d="M 48,15 L 50,30" stroke="#8d6e63" stroke-width="2" fill="none" />
+          <!-- リンゴの根本の軸（下向き曲線） -->
+          <path d="M 45,28 Q 50,33 55,28" stroke="#8d6e63" stroke-width="1.5" fill="none" stroke-linecap="round" />
+        <!-- テキスト（SVG内） -->
+        <text x="50" y="61" font-family="Arial, sans-serif" 
+        font-size="20" font-weight="bold" fill="white" text-anchor="middle" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">YES</text>
+      
+      
+      </svg>
+    </button>
     <p id="message"></p>
     <div class="counter">
       <p id="specialMessage"></p>
