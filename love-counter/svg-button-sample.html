@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SVGリンゴボタン サンプル</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+      background: linear-gradient(135deg, #f8f6f3 0%, #faf8f5 50%, #fcfbf9 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #5a4a3a;
+      margin-bottom: 40px;
+    }
+
+    .sample-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+    }
+
+    .sample-box {
+      background: #fdfcfb;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .sample-title {
+      font-size: 14px;
+      color: #999888;
+      margin-bottom: 20px;
+    }
+
+    /* サンプル1: シンプルなリンゴボタン */
+    .apple-button-1 {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .apple-button-1:hover {
+      transform: scale(1.05);
+    }
+
+    .apple-button-1:active {
+      transform: scale(0.95);
+    }
+
+    .apple-button-1 svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .apple-button-1 .button-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      pointer-events: none;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* サンプル2: SVG内にテキストを含めたバージョン */
+    .apple-button-2 {
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .apple-button-2:hover {
+      transform: translateY(-3px);
+      filter: drop-shadow(0 8px 16px rgba(212, 181, 160, 0.4));
+    }
+
+    .apple-button-2:active {
+      transform: translateY(0px);
+    }
+
+    .apple-button-2 svg {
+      width: 120px;
+      height: 120px;
+    }
+
+    /* アニメーション効果 */
+    .apple-button-2 .apple-body {
+      transition: fill 0.3s ease;
+    }
+
+    .apple-button-2:hover .apple-body {
+      fill: #ff6b9d;
+    }
+
+    /* サンプル3: グラデーションとアニメーション */
+    .apple-button-3 {
+      border: none;
+      background: none;
+      cursor: pointer;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .apple-button-3:active {
+      animation: none;
+      transform: scale(0.9);
+    }
+
+    .apple-button-3 svg {
+      width: 140px;
+      height: 140px;
+    }
+
+    .click-count {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #5a4a3a;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍎 SVGリンゴボタン サンプル</h1>
+
+  <div class="sample-container">
+    <!-- サンプル1: HTMLテキスト重ね -->
+    <div class="sample-box">
+      <div class="sample-title">サンプル1: HTMLテキスト重ね</div>
+      <button class="apple-button-1" onclick="handleClick(1)">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          
+
+          <!-- リンゴの本体 -->
+          <path d="
+            M 50,25
+            C 30,25 20,35 20,50
+            C 20,65 30,80 50,90
+            Q 50,86 50,86
+            C 70,80 80,65 80,50
+            C 80,35 70,25 50,25 Z
+          " fill="#e57373" />
+          <!-- リンゴの茎 -->
+          <path d="M 48,15 L 50,30" stroke="#8d6e63" stroke-width="2" fill="none" />
+          <!-- リンゴの根本の軸（下向き曲線） -->
+          <path d="M 45,28 Q 50,33 55,28" stroke="#8d6e63" stroke-width="1.5" fill="none" stroke-linecap="round" />
+        <!-- テキスト（SVG内） -->
+        <text x="50" y="58" font-family="Arial, sans-serif" 
+        font-size="20" font-weight="bold" fill="white" text-anchor="middle" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">YES</text>
+        </svg>
+        <!-- <span class="button-text">YES</span> -->
+      </button>
+      <div class="click-count" id="count-1">クリック数: 0</div>
+    </div>
+
+    <!-- サンプル2: SVGテキスト使用 -->
+    <div class="sample-box">
+      <div class="sample-title">サンプル2: SVGテキスト使用</div>
+      <button class="apple-button-2" onclick="handleClick(2)">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- リンゴの葉っぱ -->
+          <path d="M 48,15 Q 45,8 40,10 Q 35,12 38,17" fill="#8bc34a" />
+
+          <!-- リンゴの茎 -->
+          <path d="M 48,15 L 50,25" stroke="#8d6e63" stroke-width="2" fill="none" />
+
+          <!-- リンゴの本体 -->
+          <path class="apple-body" d="
+            M 50,25
+            C 30,25 20,35 20,50
+            C 20,65 30,80 45,85
+            L 45,88
+            C 45,92 47,95 50,95
+            C 53,95 55,92 55,88
+            L 55,85
+            C 70,80 80,65 80,50
+            C 80,35 70,25 50,25 Z
+          " fill="#f48fb1" />
+
+          <!-- ハイライト -->
+          <ellipse cx="38" cy="40" rx="8" ry="12" fill="#ffc1e3" opacity="0.6" />
+
+          <!-- テキスト（SVG内） -->
+          <text x="50" y="58" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">YES</text>
+        </svg>
+      </button>
+      <div class="click-count" id="count-2">クリック数: 0</div>
+    </div>
+
+    <!-- サンプル3: グラデーション + アニメーション -->
+    <div class="sample-box">
+      <div class="sample-title">サンプル3: グラデーション</div>
+      <button class="apple-button-3" onclick="handleClick(3)">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- グラデーション定義 -->
+          <defs>
+            <linearGradient id="appleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#e91e63;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+
+          <!-- リンゴの葉っぱ -->
+          <path d="M 48,15 Q 45,8 40,10 Q 35,12 38,17" fill="#66bb6a" />
+
+          <!-- リンゴの茎 -->
+          <path d="M 48,15 L 50,25" stroke="#6d4c41" stroke-width="2" fill="none" />
+
+          <!-- リンゴの本体（グラデーション） -->
+          <path d="
+            M 50,25
+            C 30,25 20,35 20,50
+            C 20,65 30,80 45,85
+            L 45,88
+            C 45,92 47,95 50,95
+            C 53,95 55,92 55,88
+            L 55,85
+            C 70,80 80,65 80,50
+            C 80,35 70,25 50,25 Z
+          " fill="url(#appleGradient)" />
+
+          <!-- ハイライト -->
+          <ellipse cx="38" cy="40" rx="8" ry="12" fill="#ffebee" opacity="0.7" />
+
+          <!-- テキスト -->
+          <text x="50" y="58" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">YES</text>
+        </svg>
+      </button>
+      <div class="click-count" id="count-3">クリック数: 0</div>
+    </div>
+  </div>
+
+  <script>
+    const counts = {1: 0, 2: 0, 3: 0};
+
+    function handleClick(sampleNumber) {
+      counts[sampleNumber]++;
+      document.getElementById(`count-${sampleNumber}`).textContent = `クリック数: ${counts[sampleNumber]}`;
+      console.log(`サンプル${sampleNumber}がクリックされました！`);
+    }
+  </script>
+</body>
+</html>

@@ -1,11 +1,12 @@
 const mainButton = document.getElementById('mainButton');
+const buttonText = mainButton.querySelector('.button-text');
 const message = document.getElementById('message');
 const countDisplay = document.getElementById('count');
 const specialMessageElement = document.getElementById('specialMessage');
 let count = 0;
 
 let triggers1 = [
-  "私のこと好き？<br>YES",
+  "YES",
 ];
 
 let messages1 = [
@@ -61,7 +62,7 @@ function getRandomIndex(array) {
 }
 
 // 初期表示：ランダムなボタンテキストを設定
-mainButton.innerHTML = triggers1[getRandomIndex(triggers1)];
+buttonText.textContent = triggers1[getRandomIndex(triggers1)];
 
 // ボタンクリック時の処理
 mainButton.addEventListener("click", function() {
@@ -92,6 +93,6 @@ mainButton.addEventListener("click", function() {
   }
 
   // 次のボタンテキストをランダムに設定
-  mainButton.innerHTML = triggers1[getRandomIndex(triggers1)];
+  buttonText.textContent = triggers1[getRandomIndex(triggers1)];
 });
   

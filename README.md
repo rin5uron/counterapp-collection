@@ -7,11 +7,14 @@ JavaScriptの学習と、UI/UX設計の実践を目的に、複数のテーマ�
 
 現在制作しているカウンターアプリは以下の通りです。
 
-- **ネガポジ感情カウンター**（通称：今日のきもちメーター）  
+- **ネガポジ感情カウンター**（通称：今日のきもちメーター）
   日々のポジティブ／ネガティブな感情を記録し、可視化することで心の傾向に気づくためのシンプルな感情トラッカー。
 
-- **自己管理カウンター**（通称：むらむらカウンター）  
+- **自己管理カウンター**（通称：むらむらカウンター）
   衝動的な行動を「見える化」し、遊び心を持って自己コントロール力を高めるセルフマネジメントツール。
+
+- **私のこと好き？ボタン**（Love Counter）
+  相手に気持ちを自然に伝えてもらうためのインタラクティブなメッセージボタンアプリ。Apple-likeな洗練されたデザインと、大人可愛いパステルカラーが特徴。
 
 
 
@@ -34,7 +37,7 @@ JavaScriptの学習と、UI/UX設計の実践を目的に、複数のテーマ�
 ## 完成URLと関連ファイル
 
 - **ネガポジ感情カウンター**
-  - [📄 完成URL（デモURL）](https://wooden-smooth-milkshake.glitch.me/) 
+  - [📄 完成URL（デモURL）](https://wooden-smooth-milkshake.glitch.me/)
   - [📄 README（仕様書）](./negaposi-counter/README.md)
   - [📝 プロセスログ（制作の経過と学び）](./negaposi-counter/docs_negaposi/prosess_log)
   - [🧠 制作メモ（制作構想段階のメモ）](./negaposi-counter/docs_negaposi/countermemo.md)
@@ -42,6 +45,12 @@ JavaScriptの学習と、UI/UX設計の実践を目的に、複数のテーマ�
 - **自己管理カウンター**
   - [📄 完成URL（デモURL）](https://gold-flicker-archer.glitch.me/)
   - [📄 README（仕様書）](./self-control-counter/README.md)
+
+- **私のこと好き？ボタン**
+  - [📄 完成URL（Phase1）](https://love-counter-git-phase1-rs-projects-9c94598c.vercel.app/)
+  - [📄 README（仕様書）](./love-counter/readme.md)
+  - [🎨 デザインコンセプト](./love-counter/DESIGN.md)
+  - [📋 プロジェクトフェーズ計画](./PROJECT_PHASES.md)
 
 
 
@@ -81,6 +90,6 @@ JavaScriptの学習と、UI/UX設計の実践を目的に、複数のテーマ�
 
 ## 最終更新日
 
-2025/05/23 
+2025/12/04 
 
 
