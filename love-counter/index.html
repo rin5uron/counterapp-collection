@@ -5,34 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>私のこと好き？</title>
   <style>
+    :root {
+      /* ベース */
+      --bg-beige: #F5EFE7;        /* 背景 */
+      --white: #FFFFFF;           /* カード背景 */
+      --white-soft: #FFF5F0;      /* テキスト用の柔らかい白（Apple風） */
+
+      /* りんごの色 */
+      --apple-red: #D46A6A;       /* りんご本体（落ち着いた赤） */
+      --apple-red-hover: #C15D5D; /* ホバー時（濃い赤） */
+
+      /* アクセント */
+      --soft-red: #E8B4B8;        /* ボタン、ボーダー */
+
+      /* テキスト */
+      --text-primary: #6B5B4F;    /* メインテキスト */
+      --text-secondary: #7A6650;  /* サブテキスト、茎 */
+
+      /* 影・エフェクト */
+      --shadow-soft: rgba(107, 91, 79, 0.08);
+      --shadow-apple: rgba(232, 180, 184, 0.3);
+      --shadow-apple-strong: rgba(232, 180, 184, 0.5);
+      --border-light: rgba(107, 91, 79, 0.12);
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
-      background: #F5EBE0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: var(--bg-beige);
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       min-height: 100vh;
       margin: 0;
+      padding-top: 40px;
     }
 
     .card {
-      background: #ffffff;
-      padding: 32px 24px 24px;
+      background: var(--white);
+      padding: 24px 24px 32px;
       border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 8px var(--shadow-soft);
       max-width: 340px;
       width: 90%;
       text-align: center;
-      border: 1px solid rgba(232, 155, 155, 0.2);
+      border: 1px solid var(--border-light);
     }
 
-    h1 {
+    #triggerText {
       font-size: 22px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       line-height: 1.5;
-      color: #8B7355;
-      font-weight: 600;
+      color: var(--text-primary);
+      font-weight: 500;
       letter-spacing: 0.5px;
     }
 
@@ -41,18 +66,16 @@
       background: none;
       cursor: pointer;
       padding: 0;
-      margin-bottom: 20px;
+      margin: 0 auto 24px auto;
       transition: all 0.3s ease;
       width: 150px;
       height: 150px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
     }
 
     #mainButton:hover {
-      transform: translateY(-5px);
-      filter: drop-shadow(0 10px 20px rgba(232, 155, 155, 0.3));
+      transform: translateY(-2px);
+      filter: drop-shadow(0 4px 12px var(--shadow-apple));
     }
 
     #mainButton:active {
@@ -66,35 +89,40 @@
 
     /* リンゴのホバー効果 */
     #mainButton .apple-body {
+      fill: var(--apple-red);
       transition: fill 0.3s ease;
     }
 
     #mainButton:hover .apple-body {
-      fill: #f0a8a8;
+      fill: var(--apple-red-hover);
     }
 
-    /* ボタンテキストのスタイル */
-    #mainButton .button-text {
-      font-size: 22px;
-      font-weight: bold;
-      fill: #8B7355;
-      text-anchor: middle;
+    /* りんごの茎と軸 */
+    #mainButton .apple-stem,
+    #mainButton .apple-curve {
+      stroke: var(--text-secondary);
+    }
+
+    /* りんごのテキスト */
+    #mainButton .apple-text {
+      fill: var(--white-soft);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     }
 
     #message {
       min-height: 3.5em;
-      font-size: 17px;
-      margin-bottom: 16px;
+      font-size: 18px;
+      margin-bottom: 20px;
       line-height: 1.6;
-      color: #8B7355;
-      font-weight: 500;
+      color: var(--text-primary);
+      font-weight: 600;
       letter-spacing: 0.3px;
     }
 
     #copyButton {
-      border: 1px solid #E89B9B;
-      background: #F5EBE0;
-      color: #8B7355;
+      border: 1px solid var(--soft-red);
+      background: var(--bg-beige);
+      color: var(--text-primary);
       border-radius: 999px;
       padding: 10px 20px;
       font-size: 13px;
@@ -106,14 +134,14 @@
     }
 
     #copyButton:hover {
-      background: #E89B9B;
-      color: #ffffff;
+      background: var(--soft-red);
+      color: var(--white);
       transform: translateY(-1px);
     }
 
     #copyStatus {
       font-size: 12px;
-      color: #8B7355;
+      color: var(--text-secondary);
       min-height: 1em;
       margin-bottom: 8px;
       font-weight: 500;
@@ -122,7 +150,7 @@
     .counter {
       margin-top: 8px;
       font-size: 13px;
-      color: #8B7355;
+      color: var(--text-primary);
       font-weight: 500;
       letter-spacing: 0.3px;
     }
@@ -131,39 +159,45 @@
       display: none;
       font-size: 16px;
       font-weight: 600;
-      color: #8B7355;
+      color: var(--text-primary);
       margin-bottom: 12px;
       padding: 12px 16px;
-      background: linear-gradient(135deg, #F5EBE0 0%, #ffffff 100%);
+      background: linear-gradient(135deg, var(--bg-beige) 0%, var(--white) 100%);
       border-radius: 12px;
-      border: 2px solid #E89B9B;
+      border: 2px solid var(--soft-red);
       animation: sparkle 1.5s ease-in-out infinite;
     }
 
     @keyframes sparkle {
       0%, 100% {
         transform: scale(1);
-        box-shadow: 0 0 10px rgba(232, 155, 155, 0.3);
+        box-shadow: 0 0 8px var(--shadow-apple);
       }
       50% {
-        transform: scale(1.02);
-        box-shadow: 0 0 20px rgba(232, 155, 155, 0.5), 0 0 30px rgba(232, 155, 155, 0.3);
+        transform: scale(1.01);
+        box-shadow: 0 0 12px var(--shadow-apple-strong), 0 0 16px var(--shadow-apple);
       }
     }
 
     /* スマホ対応 */
     @media (max-width: 480px) {
       body {
-        padding: 16px;
+        padding: 24px 16px;
         min-height: 100vh;
         min-height: -webkit-fill-available;
+        padding-top: 32px;
       }
 
       .card {
-        padding: 28px 20px 20px;
+        padding: 20px 20px 28px;
         max-width: 100%;
         width: 100%;
         border-radius: 16px;
+      }
+
+      #triggerText {
+        font-size: 20px;
+        margin-bottom: 12px;
       }
 
       #mainButton {
@@ -182,9 +216,9 @@
       }
 
       #message {
-        font-size: 18px;
+        font-size: 19px;
         min-height: 4em;
-        margin-bottom: 20px;
+        margin-bottom: 24px;
       }
 
       #specialMessage {
@@ -221,27 +255,33 @@
 </head>
 <body>
   <div class="card">
-<p id="triggerText">私のこと好き？</p>
+<p id="triggerText">私のこと好き？？
+</p>
     <button id="mainButton">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
           
 
           <!-- リンゴの本体 -->
-          <path d="
+           <!-- 左右対称なりんご（x=50を中心軸） -->
+           <!-- M: 始点（上部中央） -->
+           <!-- C: 三次ベジェ曲線で滑らかな形状 -->
+           <!-- 左下(45,85) ↔ 右下(55,85)で完全対称 -->
+
+          <path class="apple-body" d="
             M 50,25
             C 30,25 20,35 20,50
-            C 20,65 30,80 45,85
-            Q 50,86 50,86
-            C 70,80 80,65 80,50
+            C 20,65 26,81 45,81
+            C 50,81 50,81 55,81
+            C 72,81 80,65 80,50
             C 80,35 70,25 50,25 Z
-          " fill="#e57373" />
+          " />
           <!-- リンゴの茎 -->
-          <path d="M 48,15 L 50,30" stroke="#8d6e63" stroke-width="2" fill="none" />
+          <path class="apple-stem" d="M 50,16 L 49,32" stroke-width="2" fill="none" />
           <!-- リンゴの根本の軸（下向き曲線） -->
-          <path d="M 45,28 Q 50,33 55,28" stroke="#8d6e63" stroke-width="1.5" fill="none" stroke-linecap="round" />
+          <path class="apple-curve" d="M 44,31 Q 50,35 55,30" stroke-width="1.5" fill="none" stroke-linecap="round" />
         <!-- テキスト（SVG内） -->
-        <text x="50" y="61" font-family="Arial, sans-serif" 
-        font-size="20" font-weight="bold" fill="white" text-anchor="middle" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">YES</text>
+        <text class="apple-text" x="50" y="61" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="20" font-weight="bold" text-anchor="middle">YES</text>
       
       
       </svg>

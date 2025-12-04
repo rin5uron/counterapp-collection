@@ -1,5 +1,5 @@
 const mainButton = document.getElementById('mainButton');
-const buttonText = mainButton.querySelector('.button-text');
+const buttonText = mainButton.querySelector('.apple-text');
 const message = document.getElementById('message');
 const countDisplay = document.getElementById('count');
 const specialMessageElement = document.getElementById('specialMessage');
@@ -20,14 +20,14 @@ let messages1 = [
   "すき♡",
   "りんご食べよ〜",
   "お散歩しに行こ〜",
-  "おなかすいたから<br>私のおうちまでUberしに来て！",
+  "おなかすいた！<br>私のおうちまでUberしに来て！",
   "今のお空の写真送って🌞☁️☔️🌝",
   "明日の予定全部おしえて！",
   "今日なにしてたの〜？",
   "もしかして私のこと好き？",
   "今日の出来事ひとつだけシェアして！",
   "最近聴いてる歌教えて",
-  "そういえばこないだの話の続き気になる！<br>今すぐ話して？",
+  "そういえば！！<br>こないだの話の続き気になる！<br>今すぐ話して？？？",
   "今日の「がんばったで賞」は何？",
   "いまどんな気分？",
   "今日の小さな幸せ教えて〜",
@@ -37,7 +37,7 @@ let messages1 = [
   "好きな色教えて〜",
   "今、目の前に何がある？",
   "いま好きな人いる？",
-  "今日のコーデ見せて👗",
+  "今日のお肌の調子は？",
   "いま何食べたい？",
   "週末の予定は？",
   "最近ハマってること教えて",
@@ -45,7 +45,7 @@ let messages1 = [
   "好きな季節教えて〜",
   "朝型？夜型？",
   "今日の天気どう？",
-  "最近笑ったこと教えて😊",
+  "最近爆笑したこと教えて！",
   "今、着てる服の色は？",
   "好きな飲み物なに？",
   "今日早く寝る？",
@@ -54,6 +54,7 @@ let messages1 = [
   "今日の調子は100点満点で何点？",
   "今何時？",
   "好きな数字教えて",
+  "最近フルーツ食べた？",
 ];
 
 // ランダムなインデックスを取得する関数
