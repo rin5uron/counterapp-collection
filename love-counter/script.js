@@ -97,3 +97,34 @@ mainButton.addEventListener("click", function() {
   buttonText.textContent = triggers1[getRandomIndex(triggers1)];
 });
   
+// LINEに送信する関数
+async function sendToLine(message) {
+  try {
+    const response = await fetch('/api/send-message', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: message
+      })
+    });
+
+    if (response.ok) {
+      alert('LINEに送信しました！');
+    } else {
+      alert('送信に失敗しました');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('エラーが発生しました');
+  }
+}
+
+// 送信ボタンのイベントリスナー
+document.getElementById('sendButton').addEventListener('click', function() {
+  const replyText = document.getElementById('replyInput').value;
+  if (replyText.trim()) {
+    sendToLine(replyText);
+  }
+});

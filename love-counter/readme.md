@@ -10,7 +10,8 @@
 
 ## 🌐 デモURL
 
-- [Phase1 完成版](https://love-counter-git-phase1-rs-projects-9c94598c.vercel.app/)
+- [Phase1](https://love-counter-git-phase1-rs-projects-9c94598c.vercel.app/)
+- [Phase2](https://love-counter-git-phase2-rs-projects-9c94598c.vercel.app/)
 
 ## 📚 関連ドキュメント
 

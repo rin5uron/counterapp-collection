@@ -1,0 +1,25 @@
+{
+  "name": "love-counter-app",
+  "version": "1.0.0",
+  "description": "Love Counter with LINE Messaging API integration",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "vercel build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "love-counter",
+    "line-bot",
+    "messaging-api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@line/bot-sdk": "^7.6.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
+}

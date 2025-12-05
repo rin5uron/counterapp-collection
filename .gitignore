@@ -2,9 +2,8 @@ node_modules/
 .DS_Store
 *.zip
 *.log
-node_modules/
-.DS_Store
-*.zip
-*.log
-node_modules/
-.DS_Store
+
+# 環境変数ファイル（機密情報）
+.env
+.env.local
+.env.*.local
