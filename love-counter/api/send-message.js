@@ -84,12 +84,12 @@ module.exports = async (req, res) => {
   // ステップ4: メイン処理（メッセージ送信）
   // ----------------------------------------
   try {
-    // リクエストボディからメッセージを取得
-    // フロントエンドから { message: "こんにちは" } という形式で送られてくる
-    const { message } = req.body;
+    // リクエストボディからメッセージとユーザーIDを取得
+    // フロントエンド（LIFF）から { userId: "Uxxxxx", message: "こんにちは" } という形式で送られてくる
+    const { userId, message } = req.body;
 
     // ---------------------------------
-    // メッセージの検証
+    // メッセージとユーザーIDの検証
     // ---------------------------------
     // 1. messageが存在しない → NG
     // 2. messageが文字列じゃない → NG
@@ -97,6 +97,12 @@ module.exports = async (req, res) => {
     if (!message || typeof message !== 'string' || message.trim() === '') {
       // 400 Bad Request = クライアント側のリクエストが不正
       return res.status(400).json({ error: 'Invalid message' });
+    }
+
+    // userIdが存在しない → NG
+    // LIFF実装後は、フロントエンドから送られてくるuserIdを使用
+    if (!userId || typeof userId !== 'string') {
+      return res.status(400).json({ error: 'userId is required' });
     }
 
     // ---------------------------------
@@ -110,29 +116,19 @@ module.exports = async (req, res) => {
       return res.status(500).json({ error: 'Server configuration error' });
     }
 
-    // LINE_USER_ID が設定されているか確認
-    // これがないと誰に送ればいいか分からない
-    if (!process.env.LINE_USER_ID) {
-      console.error('LINE_USER_ID is not set');
-      return res.status(500).json({ error: 'Server configuration error' });
-    }
-
-    // 送信先のユーザーIDを取得
-    // このIDは「LINEボットと友達になっているユーザー」のID
-    const userId = process.env.LINE_USER_ID;
-
     // ---------------------------------
     // LINEにメッセージを送信
     // ---------------------------------
     // pushMessage = ユーザーに対してメッセージを「プッシュ配信」
     // （ユーザーからのメッセージに返信するreplyMessageとは違う）
+    // LIFF実装後: フロントエンドから受け取ったuserIdを使用
     await client.pushMessage(userId, {
       type: 'text',        // メッセージのタイプ（テキスト）
       text: message        // 送信するテキスト内容
     });
 
     // 成功ログを出力（Vercelのログで確認できる）
-    console.log('Message sent successfully:', message);
+    console.log('Message sent successfully to userId:', userId, 'message:', message);
 
     // フロントエンドに成功レスポンスを返す
     // 200 OK = 正常に処理完了

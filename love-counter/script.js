@@ -73,10 +73,13 @@ mainButton.addEventListener("click", function() {
   // ランダムなメッセージを表示
   message.innerHTML = messages1[getRandomIndex(messages1)];
 
-  // 22で割り切れるときに特別メッセージを表示
+  // 22で割り切れるときに特別メッセージとLINE送信フォームを表示
   if (count % 22 === 0 && count !== 0) {
     specialMessageElement.innerHTML = "✨このメッセージの答えを教えてね！✨";
     specialMessageElement.style.display = "block";
+
+    // LINE送信フォームを表示
+    document.getElementById('replySection').style.display = "block";
 
     // ボタンを一時的に無効化
     mainButton.disabled = true;
@@ -97,15 +100,23 @@ mainButton.addEventListener("click", function() {
   buttonText.textContent = triggers1[getRandomIndex(triggers1)];
 });
   
-// LINEに送信する関数
+// LINEに送信する関数（LIFF対応版）
 async function sendToLine(message) {
   try {
+    // ユーザーIDが取得できているか確認
+    if (!userLineId) {
+      alert('LINEアプリで開いてください');
+      return;
+    }
+
+    // バックエンドにユーザーIDとメッセージを送信
     const response = await fetch('/api/send-message', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        userId: userLineId,  // 送信者のLINE ID
         message: message
       })
     });
@@ -113,7 +124,8 @@ async function sendToLine(message) {
     if (response.ok) {
       alert('LINEに送信しました！');
     } else {
-      alert('送信に失敗しました');
+      const error = await response.json();
+      alert('送信に失敗しました: ' + (error.error || ''));
     }
   } catch (error) {
     console.error('Error:', error);
@@ -122,9 +134,58 @@ async function sendToLine(message) {
 }
 
 // 送信ボタンのイベントリスナー
-document.getElementById('sendButton').addEventListener('click', function() {
-  const replyText = document.getElementById('replyInput').value;
+document.getElementById('sendButton').addEventListener('click', async function() {
+  const replyInput = document.getElementById('replyInput');
+  const replyText = replyInput.value;
+
   if (replyText.trim()) {
-    sendToLine(replyText);
+    await sendToLine(replyText);
+    // 送信後、フォームをクリアして非表示
+    replyInput.value = '';
+    document.getElementById('replySection').style.display = 'none';
+  } else {
+    alert('メッセージを入力してください');
   }
+});
+
+// キャンセルボタンのイベントリスナー
+document.getElementById('cancelButton').addEventListener('click', function() {
+  // フォームをクリアして非表示
+  document.getElementById('replyInput').value = '';
+  document.getElementById('replySection').style.display = 'none';
+});
+
+
+// ========================================
+// LIFF初期化
+// ========================================
+
+let userLineId = null; // ユーザーのLINE ID（グローバル変数）
+
+// LIFF初期化
+async function initializeLiff() {
+  try {
+    // LIFFを初期化
+    await liff.init({ liffId: '2008641870-nLbJegy4' }); // ← あなたのLIFF IDに変更
+
+    // LINEにログインしているか確認
+    if (!liff.isLoggedIn()) {
+      // ログインしていない場合はログイン画面へ
+      liff.login();
+    } else {
+      // ログイン済みの場合、ユーザー情報を取得
+      const profile = await liff.getProfile();
+      userLineId = profile.userId; // ユーザーIDを保存
+      console.log('User ID:', userLineId);
+      console.log('Display Name:', profile.displayName);
+    }
+  } catch (error) {
+    console.error('LIFF initialization failed', error);
+    alert('LINEアプリで開いてください');
+  }
+}
+
+// ページ読み込み時にLIFFを初期化
+window.addEventListener('DOMContentLoaded', function() {
+  initializeLiff();
 });

@@ -11,6 +11,9 @@ This file contains what I learned through the project, organized by date.
 - [2025/12/4 - innerHTML, disabled, Math.random(), Math.floor(), setTimeout(), 配列, 関数の引数, path順序, Z (Close path), SVG重なり順, **左右対称ロジック**, **曲線の滑らかさ調整**](#20251204---javascript基礎)
 
 ---
+１２・６
+1205_channel
+
 
 ## 2025/12/6 - LINEチャネルとボットの関係
 
