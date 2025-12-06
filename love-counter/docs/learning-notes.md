@@ -6,7 +6,7 @@ This file contains what I learned through the project, organized by date.
 
 ## 📚 目次
 
-- [2025/12/6 - LINEチャネル, プロバイダー, Messaging API, 複数ボット管理, 機能分岐設計](#20251206---lineチャネルとボットの関係)
+- [2025/12/6 - LINEチャネル, プロバイダー, Messaging API, 複数ボット管理, 機能分岐設計, **Vercelビルドエラー解決**](#20251206---lineチャネルとボットの関係)
 - [2025/12/5 - SVG, ベクター画像, path, circle, text, viewBox, xmlns, 名前空間, グラデーション, 描画順序, Q (Quadratic curve), 制御点](#20251205---svgとcssの違い)
 - [2025/12/4 - innerHTML, disabled, Math.random(), Math.floor(), setTimeout(), 配列, 関数の引数, path順序, Z (Close path), SVG重なり順, **左右対称ロジック**, **曲線の滑らかさ調整**](#20251204---javascript基礎)
 
@@ -235,6 +235,161 @@ async function replyMenu(replyToken) {
    - 管理が楽
    - データ分析しやすい
 6. **各チャネルは完全に独立**（ID、トークン、Webhook URLが別々）
+
+---
+
+### ❌ エラー解決: Vercelビルドエラー（循環参照）
+
+#### 発生したエラー
+
+**状況:**
+GitHubにプッシュ後、Vercelの自動デプロイが失敗
+
+**エラーメッセージ:**
+```
+Build Failed
+The deployment failed to build.
+Running "vercel build"
+```
+
+**ビルドログ:**
+```
+Installing dependencies...
+npm warn deprecated ...（多数の警告）
+```
+
+ビルドプロセスが`vercel build`を実行しようとして、循環参照で失敗。
+
+---
+
+#### 原因
+
+**package.jsonのbuildスクリプトが問題:**
+
+```json
+// ❌ 問題のあるコード
+{
+  "scripts": {
+    "build": "vercel build"  // ← これが循環参照を起こす
+  }
+}
+```
+
+**なぜ問題か？**
+1. Vercelは自動的に`npm run build`を実行する
+2. `build`スクリプトが`vercel build`を実行
+3. `vercel build`が`npm run build`を実行
+4. → **無限ループ（循環参照）** で失敗
+
+**そもそも、このプロジェクトは静的サイト（HTML, CSS, JS）なので、ビルドプロセスは不要！**
+
+---
+
+#### 解決方法
+
+**package.jsonからbuildスクリプトを削除:**
+
+```json
+// ✅ 修正後
+{
+  "scripts": {
+    "dev": "vercel dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+    // buildスクリプトを削除
+  }
+}
+```
+
+**修正コマンド:**
+```bash
+# 修正をコミット
+git add love-counter/package.json
+git commit -m "fix: package.jsonのbuildスクリプトを削除"
+
+# mainブランチにプッシュ
+git checkout main
+git merge dev
+git push origin main
+```
+
+---
+
+#### Vercelの設定確認
+
+**Root Directory設定が重要:**
+
+1. Vercel Dashboard → プロジェクト → Settings → General
+2. **Root Directory**: `love-counter` に設定
+
+これがないと、Vercelがpackage.jsonを見つけられない。
+
+---
+
+#### 学んだこと
+
+1. **静的サイトにはビルドスクリプトは不要**
+   - HTML, CSS, JSのみ = ビルド不要
+   - React, Next.jsなど = ビルド必要
+
+2. **package.jsonのscriptsの役割**
+   - `build`: Vercelが自動的に実行
+   - `dev`: ローカル開発用
+   - 不要なスクリプトは削除すべき
+
+3. **循環参照の怖さ**
+   - `vercel build` → `npm run build` → `vercel build` → ループ
+   - 無限ループでビルドが止まらない
+
+4. **Vercelのデプロイフロー**
+   ```
+   GitHub Push
+     ↓
+   Vercel自動デプロイ開始
+     ↓
+   npm install（依存パッケージインストール）
+     ↓
+   npm run build（buildスクリプト実行）← ここでエラー
+     ↓
+   デプロイ完了
+   ```
+
+5. **Root Directoryの重要性**
+   - モノレポ構成の場合は必須設定
+   - `love-counter/` にpackage.jsonがあるので設定が必要
+
+---
+
+#### トラブルシューティング手順
+
+**エラーが出たら：**
+
+1. **ビルドログを全て確認**
+   - Vercel Dashboard → Deployments → 失敗したデプロイ
+   - Build Logsタブ → 一番下までスクロール
+
+2. **エラーメッセージで検索**
+   - `npm ERR!` で始まる行を探す
+   - `Error:` で始まる行を探す
+
+3. **package.jsonを確認**
+   - buildスクリプトが適切か
+   - 依存パッケージが正しいか
+
+4. **Vercelの設定を確認**
+   - Root Directory
+   - Build Command
+   - Output Directory
+
+---
+
+#### まとめ（エラー解決）
+
+| 項目 | 問題 | 解決 |
+|------|------|------|
+| **エラー** | Vercelビルド失敗 | buildスクリプト削除 |
+| **原因** | 循環参照 | 静的サイトなのでビルド不要 |
+| **学び** | package.jsonのscripts理解 | 不要なスクリプトは削除 |
+| **設定** | Root Directory未設定 | `love-counter`に設定 |
 
 ---
 
