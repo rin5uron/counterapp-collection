@@ -168,6 +168,70 @@
       animation: sparkle 1.5s ease-in-out infinite;
     }
 
+    .reply-section {
+  margin-top: 32px;
+  padding: 24px;
+  background: #FFF5F0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* テキストエリア */
+.reply-section textarea {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #E8D5C4;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.reply-section textarea:focus {
+  outline: none;
+  border-color: #D46A6A;
+}
+
+/* 送信ボタン */
+.send-button {
+  width: 100%;
+  margin-top: 16px;
+  padding: 16px;
+  background: #D46A6A;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.send-button:hover {
+  background: #C15D5D;
+  transform: translateY(-2px);
+}
+
+.send-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* キャンセルボタン */
+.cancel-button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  background: transparent;
+  color: #666;
+  border: 2px solid #E8D5C4;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
     @keyframes sparkle {
       0%, 100% {
         transform: scale(1);
@@ -291,6 +355,26 @@
     <div class="counter">
       私のこと好き度：<span id="count">0</span> %
       <p id="specialMessage"></p>
+      <div class="reply-section" id="replySection" style="display: none;">
+
+        <!-- テキストエリア（複数行のテキスト入力） -->
+        <textarea
+          id="replyInput"
+          placeholder="返信を入力..."
+          rows="4"
+          maxlength="500"
+        ></textarea>
+      
+        <!-- 送信ボタン -->
+        <button id="sendButton" class="send-button">
+          LINEに送信
+        </button>
+      
+        <!-- キャンセルボタン（オプション） -->
+        <button id="cancelButton" class="cancel-button">
+          キャンセル
+        </button>
+      
     </div>
   </div>
 
