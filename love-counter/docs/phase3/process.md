@@ -996,4 +996,165 @@ Error: LINE_CHANNEL_ACCESS_TOKEN is not set
 
 ---
 
+## 🐛 エラーと改善記録
+
+### 2025-12-06: LIFF実装中のトラブルシューティング
+
+#### エラー1: LINEログイン画面が表示される（離脱率高）
+
+**問題:**
+- LIFF URLを開くとLINEログイン画面が表示される
+- ユーザーがログイン画面で離脱してしまう
+
+**原因:**
+- ボットリンク機能が設定されていない、または正しく連携されていない
+- 公式アカウントを友達追加していない
+
+**解決方法:**
+1. **ボットリンク機能の設定**
+   - LINEログインチャネル「Love Counter Login」→ チャネル基本設定 → リンクされたボット → Messaging APIチャネル「J」を選択
+   - または、Messaging APIチャネル側で「リンクされたLINEログインチャネル」を設定
+
+2. **script.jsの修正**
+   - `liff.login()` → `liff.login({ redirectUri: window.location.href })`
+   - 自動的にログイン処理を行うように変更
+
+**コード変更:**
+```javascript
+// 修正前
+if (!liff.isLoggedIn()) {
+  liff.login();
+}
+
+// 修正後
+if (!liff.isLoggedIn()) {
+  liff.login({ redirectUri: window.location.href });
+}
+```
+
+---
+
+#### エラー2: 「正常に作動しませんでした」エラー（3回ボタン押下後）
+
+**問題:**
+- LIFF URLを開いた後、3回程度ボタンを押すと「正常に作動しませんでした」エラー
+- LINEの初期設定画面にリダイレクトされる
+
+**原因:**
+- **エンドポイントURLの設定ミス**
+- LIFF設定のエンドポイントURLが `main` ブランチのURLになっていたが、実装は `dev` ブランチにあった
+- そのため、LIFFが正しいファイルを読み込めなかった
+
+**解決方法:**
+1. **エンドポイントURLの確認**
+   - LINE Developers Console → Love Counter Login → LIFF → 編集
+   - エンドポイントURLを確認
+   - Vercelのデプロイ先URLと一致させる
+
+2. **devブランチをmainにマージ**
+   - `main` ブランチにLIFF実装をマージ
+   - ユーザーには各フェーズのURLを共有しているため、mainブランチで動作させる必要があった
+
+**実施内容:**
+```bash
+git checkout main
+git merge dev
+git push origin main
+```
+
+---
+
+#### エラー3: 400 Bad Request（全ブラウザで発生）
+
+**問題:**
+- LINEブラウザ、Safari、Chrome すべてで400エラー
+- メッセージ送信時にエラーが発生
+
+**推測される原因:**
+- `userId` が取得できていない
+- または `userId` がバックエンドに送信されていない
+- バックエンドのバリデーションで弾かれている
+
+**デバッグ対処:**
+
+スマホでブラウザコンソールを確認できないため、**デバッグログを画面に表示**する方式に変更。
+
+**実施した変更（2025-12-06）:**
+
+1. **LIFF初期化時のデバッグログ追加**
+   ```javascript
+   // script.js
+   async function initializeLiff() {
+     try {
+       await liff.init({ liffId: '2008641870-nLbJegy4' });
+
+       if (!liff.isLoggedIn()) {
+         liff.login({ redirectUri: window.location.href });
+       } else {
+         const profile = await liff.getProfile();
+         userLineId = profile.userId;
+         console.log('User ID:', userLineId);
+         console.log('Display Name:', profile.displayName);
+
+         // デバッグ用：画面に表示
+         alert('LIFF初期化成功！\nUser ID: ' + userLineId + '\nName: ' + profile.displayName);
+       }
+     } catch (error) {
+       console.error('LIFF initialization failed', error);
+       alert('LIFF初期化エラー: ' + error.message);
+     }
+   }
+   ```
+
+2. **送信エラー時の詳細表示**
+   ```javascript
+   // sendToLine関数
+   if (!userLineId) {
+     alert('userLineIdが取得できていません。LINEアプリで開いてください。');
+     return;
+   }
+
+   // デバッグ用：送信内容を確認
+   console.log('送信データ:', { userId: userLineId, message: message });
+
+   // エラー時
+   if (!response.ok) {
+     const error = await response.json();
+     alert('送信エラー\nステータス: ' + response.status + '\nエラー内容: ' + JSON.stringify(error));
+   }
+   ```
+
+**目的:**
+- LIFF初期化が成功しているか確認
+- `userLineId` が正しく取得できているか確認
+- 送信時のエラー詳細を確認
+- スマホでもエラー内容を画面上で確認可能にする
+
+**次のステップ:**
+- Vercelデプロイ完了後、LIFF URLを開く
+- 表示されるアラートの内容を確認
+- エラー内容に応じて修正
+
+---
+
+### 学んだこと
+
+1. **LIFFのエンドポイントURLは完全一致が必要**
+   - ブランチごとにURLが違う場合、デプロイ先を統一する必要がある
+   - エンドポイントURL設定ミスは「正常に作動しませんでした」エラーになる
+
+2. **ボットリンク機能は必須**
+   - これがないとログイン画面が毎回表示される
+   - ユーザー体験が悪く、離脱率が上がる
+
+3. **スマホでのデバッグは画面表示が有効**
+   - ブラウザコンソールを確認できない場合が多い
+   - `alert()` で重要な情報を表示すると、問題を特定しやすい
+
+4. **エラーは段階的に切り分ける**
+   - LIFF初期化 → ユーザーID取得 → 送信処理
+   - どの段階でエラーが起きているか特定することが重要
+
+---
+
 **頑張りましょう！🚀**

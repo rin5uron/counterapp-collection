@@ -121,17 +121,29 @@
    |------|---------|
    | **LIFFアプリ名** | `Love Counter` |
    | **サイズ** | `Full` （全画面表示） |
-   | **エンドポイントURL** | `https://your-vercel-url.vercel.app/love-counter/` |
+   | **エンドポイントURL** | **あなたのVercel URLを入力** |
    | **Scope** | ☑️ `profile` ☑️ `openid` |
+
+   **エンドポイントURLの確認方法：**
+
+   1. [Vercel Dashboard](https://vercel.com/dashboard) を開く
+   2. プロジェクト（love-counter）を選択
+   3. **Domains** の欄に表示されているURLをコピー
+   4. そのURLをエンドポイントURLに入力
 
    **エンドポイントURLの例：**
    ```
-   https://counterapp-collection-xxxxx.vercel.app/love-counter/
+   https://love-counter-theta.vercel.app/
+   ```
+   または
+   ```
+   https://your-project-name.vercel.app/
    ```
 
-   ⚠️ **注意**:
-   - URLの最後に `/` をつけてください
-   - まだデプロイしていない場合は、仮のURLでOK（後で変更可能）
+   ⚠️ **重要**:
+   - **実際のVercel デプロイ先URLを使う**（例のURLをそのまま使わない）
+   - URLの最後に `/` をつける
+   - `love-counter/` などのサブディレクトリは**不要**（ルートURLでOK）
 
 5. **オプション項目**（チェック不要）：
    - Scan QR: チェックしない
