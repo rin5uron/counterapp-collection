@@ -162,20 +162,16 @@ document.getElementById('cancelButton').addEventListener('click', function() {
 
 let userLineId = null; // ユーザーのLINE ID（グローバル変数）
 
-// LIFF初期化
 async function initializeLiff() {
   try {
-    // LIFFを初期化
-    await liff.init({ liffId: '2008641870-nLbJegy4' }); // ← あなたのLIFF IDに変更
+    await liff.init({ liffId: '2008641870-nLbJegy4' });
 
-    // LINEにログインしているか確認
     if (!liff.isLoggedIn()) {
-      // ログインしていない場合はログイン画面へ
-      liff.login();
+      // ログイン画面を表示せずに、自動的にログイン
+      liff.login({ redirectUri: window.location.href });
     } else {
-      // ログイン済みの場合、ユーザー情報を取得
       const profile = await liff.getProfile();
-      userLineId = profile.userId; // ユーザーIDを保存
+      userLineId = profile.userId;
       console.log('User ID:', userLineId);
       console.log('Display Name:', profile.displayName);
     }
