@@ -167,27 +167,40 @@ let userLineId = null; // ユーザーのLINE ID（グローバル変数）
 
 async function initializeLiff() {
   try {
+    // デバッグ: LIFF初期化開始を表示
+    console.log('LIFF初期化開始...');
+
     await liff.init({ liffId: '2008641870-nLbJegy4' });
 
+    console.log('LIFF初期化完了。ログイン状態:', liff.isLoggedIn());
+
     if (!liff.isLoggedIn()) {
+      console.log('未ログイン。ログイン画面へ');
       // ログイン画面を表示せずに、自動的にログイン
       liff.login({ redirectUri: window.location.href });
-    } else {
-      const profile = await liff.getProfile();
-      userLineId = profile.userId;
-      console.log('User ID:', userLineId);
-      console.log('Display Name:', profile.displayName);
-
-      // デバッグ用：画面に表示
-      alert('LIFF初期化成功！\nUser ID: ' + userLineId + '\nName: ' + profile.displayName);
+      return; // ログインページに遷移するのでここで終了
     }
+
+    // ログイン済みの場合、プロフィール取得
+    console.log('ログイン済み。プロフィール取得中...');
+    const profile = await liff.getProfile();
+    userLineId = profile.userId;
+    console.log('User ID:', userLineId);
+    console.log('Display Name:', profile.displayName);
+
+    // デバッグ用：画面に表示
+    alert('LIFF初期化成功！\nUser ID: ' + userLineId + '\nName: ' + profile.displayName);
+
   } catch (error) {
     console.error('LIFF initialization failed', error);
     alert('LIFF初期化エラー: ' + error.message);
   }
 }
 
-// ページ読み込み時にLIFFを初期化
-window.addEventListener('DOMContentLoaded', function() {
+// ページ読み込み時にLIFFを初期化（必ず実行）
+if (typeof liff !== 'undefined') {
   initializeLiff();
-});
+} else {
+  console.error('LIFF SDKが読み込まれていません');
+  alert('LIFF SDKエラー: SDKが読み込まれていません');
+}
