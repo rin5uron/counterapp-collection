@@ -660,8 +660,16 @@ LINE_USER_ID=ここにあなたのユーザーIDを貼り付け
    - Vercelダッシュボードで確認
    - 例: `https://love-counter.vercel.app`
 
-3. **Webhook URLを作成**
-   - Webhook URL = `https://love-counter.vercel.app/api/webhook`
+3. **Webhook URLを確認（メモする）**
+   - Webhook URL = `https://https://love-counter-theta.vercel.app//api/webhook`
+   - **重要**: Vercelには何も設定不要
+   - `api/webhook.js`ファイルがあれば、Vercelが自動で`/api/webhook`エンドポイントを作成
+   - このURLを次のステップ（5-2）でLINE Developersに設定する
+
+**補足: 複数アプリで1つのWebhook URLを共有する場合**
+- counterapp-collection全体で1つのLINE公式アカウントを使う場合
+- Webhook URL: `https://counterapp-collection.vercel.app/api/webhook`
+- 詳細は [仕様書 - 複数アプリ管理のアーキテクチャ](./spec.md#複数アプリ管理のアーキテクチャ) を参照
 
 ---
 

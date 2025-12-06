@@ -249,6 +249,147 @@ setTimeout(function() {
 - **バックエンド**: Vercel Serverless Functions
 - **認証**: 環境変数（`.env.local`）
 
+---
+
+### 複数アプリ管理のアーキテクチャ
+
+#### コンセプト
+**1つのLINE公式アカウント「テスト用メンヘラアカウント」で全メンヘラアプリを管理**
+
+counterapp-collectionには3つのアプリがありますが、すべて1つのLINE公式アカウントで管理します。
+
+```
+LINE公式アカウント「テスト用メンヘラアカウント」
+  ↓
+  Webhook URL: https://counterapp-collection.vercel.app/api/webhook
+  ↓（内部で振り分け）
+  ├─ love-counter への処理
+  ├─ negaposi-counter への処理
+  └─ self-control-counter への処理
+```
+
+#### システム構成
+
+**Vercelプロジェクト構成**
+```
+counterapp-collection/
+├── api/
+│   └── webhook.js          # 共通Webhook（振り分けロジック）
+│
+├── love-counter/
+│   ├── index.html          # フロントエンド
+│   └── script.js
+│
+├── negaposi-counter/
+│   ├── index.html          # フロントエンド
+│   └── script.js
+│
+└── self-control-counter/
+    ├── index.html          # フロントエンド
+    └── script.js
+```
+
+#### Webhook振り分け方式
+
+##### 方式1: コマンドベース（推奨）
+
+ユーザーがメッセージの先頭にコマンドをつけることで、どのアプリに送るか指定：
+
+**実装例**:
+```javascript
+// api/webhook.js
+export default async function handler(req, res) {
+  const events = req.body.events;
+
+  for (const event of events) {
+    if (event.type !== 'message' || event.message.type !== 'text') {
+      continue;
+    }
+
+    const userMessage = event.message.text;
+
+    // コマンドで振り分け
+    if (userMessage.startsWith('/love')) {
+      await handleLoveCounter(event, userMessage);
+    } else if (userMessage.startsWith('/negaposi')) {
+      await handleNegaPosiCounter(event, userMessage);
+    } else if (userMessage.startsWith('/self')) {
+      await handleSelfControlCounter(event, userMessage);
+    } else {
+      // ヘルプメッセージ
+      await replyHelp(event);
+    }
+  }
+
+  res.status(200).json({ success: true });
+}
+```
+
+**ユーザーの使い方**:
+```
+/love こんにちは        → love-counterに送信
+/negaposi 今日は最悪    → negaposi-counterに送信
+/self 頑張った！        → self-control-counterに送信
+help                   → ヘルプメッセージを表示
+```
+
+##### 方式2: Postbackデータベース
+
+LINEのリッチメニューやボタンテンプレートを使用：
+
+```javascript
+// ボタンで「どのアプリか」を自動判別
+{
+  type: 'postback',
+  data: 'app=love-counter&action=send&message=こんにちは'
+}
+```
+
+**メリット**:
+- ユーザーがコマンドを覚える必要がない
+- タップだけで操作可能
+- UI/UXが洗練される
+
+**デメリット**:
+- リッチメニューの設定が必要
+- 初期実装が複雑
+
+#### なぜ1つのアカウントで管理するのか？
+
+**メリット**:
+1. **ユーザー体験**: 1回の友達追加で全アプリ利用可能
+2. **管理の簡単さ**: 1つのトークン、1つの設定
+3. **コスト削減**: 複数のLINE公式アカウント不要
+4. **コード共通化**: 認証・エラーハンドリングを共有
+5. **学習効果**: より実践的なアーキテクチャ設計を学べる
+
+**デメリット**:
+- Webhookのコードが複雑になる
+- 各アプリの結合度が上がる
+
+**参考**: [学習メモ - 12/6 LINEチャネルとボットの関係](./learning-notes.md)
+
+#### LINE Developers設定
+
+**重要な制約**:
+- **1つのLINEチャネルには1つのWebhook URLしか設定できない**
+- したがって、`api/webhook.js`内で振り分けロジックを実装する必要がある
+
+**設定するWebhook URL**:
+```
+https://counterapp-collection.vercel.app/api/webhook
+```
+
+#### 環境変数
+
+全アプリ共通で使用：
+
+```bash
+# .env.local（Vercelにも設定）
+CHANNEL_ACCESS_TOKEN=your_channel_access_token
+CHANNEL_SECRET=your_channel_secret
+```
+
 **詳細**: [フェーズ3実装手順](./phase3/process.md) を参照
 
 ---
