@@ -105,9 +105,12 @@ async function sendToLine(message) {
   try {
     // ユーザーIDが取得できているか確認
     if (!userLineId) {
-      alert('LINEアプリで開いてください');
+      alert('userLineIdが取得できていません。LINEアプリで開いてください。');
       return;
     }
+
+    // デバッグ用：送信内容を確認
+    console.log('送信データ:', { userId: userLineId, message: message });
 
     // バックエンドにユーザーIDとメッセージを送信
     const response = await fetch('/api/send-message', {
@@ -125,11 +128,11 @@ async function sendToLine(message) {
       alert('LINEに送信しました！');
     } else {
       const error = await response.json();
-      alert('送信に失敗しました: ' + (error.error || ''));
+      alert('送信エラー\nステータス: ' + response.status + '\nエラー内容: ' + JSON.stringify(error));
     }
   } catch (error) {
     console.error('Error:', error);
-    alert('エラーが発生しました');
+    alert('通信エラー: ' + error.message);
   }
 }
 
@@ -174,10 +177,13 @@ async function initializeLiff() {
       userLineId = profile.userId;
       console.log('User ID:', userLineId);
       console.log('Display Name:', profile.displayName);
+
+      // デバッグ用：画面に表示
+      alert('LIFF初期化成功！\nUser ID: ' + userLineId + '\nName: ' + profile.displayName);
     }
   } catch (error) {
     console.error('LIFF initialization failed', error);
-    alert('LINEアプリで開いてください');
+    alert('LIFF初期化エラー: ' + error.message);
   }
 }
 
