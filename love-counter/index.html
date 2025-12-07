@@ -35,30 +35,35 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       min-height: 100vh;
+      min-height: var(--dvh, 100vh); /* カスタム高さ変数（JavaScriptで設定） */
       margin: 0;
-      padding-top: 40px;
+      padding: 20px;
     }
 
     .card {
       background: var(--white);
-      padding: 24px 24px 32px;
+      padding: 24px;
       border-radius: 20px;
       box-shadow: 0 2px 8px var(--shadow-soft);
-      max-width: 340px;
+      max-width: 360px;
       width: 90%;
       text-align: center;
       border: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     #triggerText {
       font-size: 22px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       line-height: 1.5;
       color: var(--text-primary);
       font-weight: 500;
       letter-spacing: 0.5px;
+      order: 1; /* 順序指定：質問文が最初 */
     }
 
     #mainButton {
@@ -66,20 +71,24 @@
       background: none;
       cursor: pointer;
       padding: 0;
-      margin: 0 auto 24px auto;
-      transition: all 0.3s ease;
-      width: 150px;
-      height: 150px;
+      margin: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 120px;
+      height: 120px;
       display: block;
+      order: 2; /* 順序指定：ボタンは2番目 */
+      filter: drop-shadow(0 4px 8px var(--shadow-apple));
     }
 
     #mainButton:hover {
-      transform: translateY(-2px);
-      filter: drop-shadow(0 4px 12px var(--shadow-apple));
+      transform: translateY(-3px) scale(1.02);
+      filter: drop-shadow(0 6px 16px var(--shadow-apple-strong));
     }
 
     #mainButton:active {
-      transform: translateY(0px) scale(0.95);
+      transform: translateY(1px) scale(0.92);
+      filter: drop-shadow(0 2px 4px var(--shadow-apple));
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     #mainButton svg {
@@ -87,14 +96,13 @@
       height: 100%;
     }
 
-    /* リンゴのホバー効果 */
+    /* リンゴのホバー効果（グラデーションを使う場合は不要だが、fallback用に残す） */
     #mainButton .apple-body {
-      fill: var(--apple-red);
-      transition: fill 0.3s ease;
+      transition: opacity 0.3s ease;
     }
 
     #mainButton:hover .apple-body {
-      fill: var(--apple-red-hover);
+      opacity: 0.9;
     }
 
     /* りんごの茎と軸 */
@@ -111,12 +119,14 @@
 
     #message {
       min-height: 3.5em;
-      font-size: 18px;
-      margin-bottom: 20px;
+      font-size: 19px;
+      margin-top: 24px;
+      margin-bottom: 16px;
       line-height: 1.6;
       color: var(--text-primary);
       font-weight: 600;
       letter-spacing: 0.3px;
+      order: 3; /* 順序指定：結果メッセージはボタンの下 */
     }
 
     #copyButton {
@@ -149,10 +159,11 @@
 
     .counter {
       margin-top: 8px;
-      font-size: 13px;
+      font-size: 15px;
       color: var(--text-primary);
       font-weight: 500;
       letter-spacing: 0.3px;
+      order: 4; /* 順序指定：カウンターは結果の下 */
     }
 
     #specialMessage {
@@ -310,14 +321,11 @@
     /* スマホ対応 */
     @media (max-width: 480px) {
       body {
-        padding: 24px 16px;
-        min-height: 100vh;
-        min-height: -webkit-fill-available;
-        padding-top: 32px;
+        padding: 16px;
       }
 
       .card {
-        padding: 20px 20px 28px;
+        padding: 24px 20px;
         max-width: 100%;
         width: 100%;
         border-radius: 16px;
@@ -325,58 +333,63 @@
 
       #triggerText {
         font-size: 20px;
-        margin-bottom: 12px;
+        margin-bottom: 24px;
       }
 
       #mainButton {
-        width: 140px;
-        height: 140px;
+        width: 110px;
+        height: 110px;
         -webkit-tap-highlight-color: transparent;
         touch-action: manipulation;
       }
 
       #mainButton:active {
-        transform: scale(0.9);
+        transform: translateY(2px) scale(0.88);
       }
 
-      #mainButton .button-text {
-        font-size: 20px;
+      #mainButton .apple-text {
+        font-size: 19px;
       }
 
       #message {
-        font-size: 19px;
+        font-size: 18px;
         min-height: 4em;
-        margin-bottom: 24px;
+        margin-top: 28px;
+        margin-bottom: 12px;
       }
 
       #specialMessage {
-        font-size: 17px;
-        padding: 14px 18px;
+        font-size: 16px;
+        padding: 12px 16px;
       }
 
       .counter {
-        font-size: 14px;
-        margin-top: 12px;
+        font-size: 16px;
+        margin-top: 10px;
       }
     }
 
     /* 小さいスマホ対応 */
     @media (max-width: 360px) {
       .card {
-        padding: 24px 16px 16px;
+        padding: 20px 16px;
       }
 
       #mainButton {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
       }
 
-      #mainButton .button-text {
-        font-size: 18px;
+      #mainButton .apple-text {
+        font-size: 17px;
       }
 
       #message {
-        font-size: 16px;
+        font-size: 17px;
+      }
+
+      .counter {
+        font-size: 15px;
       }
     }
   </style>
@@ -388,14 +401,16 @@
 </p>
     <button id="mainButton">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          
+          <!-- グラデーション定義 -->
+          <defs>
+            <radialGradient id="appleGradient" cx="45%" cy="35%">
+              <stop offset="0%" style="stop-color:#E89999;stop-opacity:1" />
+              <stop offset="50%" style="stop-color:#D46A6A;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#C15D5D;stop-opacity:1" />
+            </radialGradient>
+          </defs>
 
-          <!-- リンゴの本体 -->
-           <!-- 左右対称なりんご（x=50を中心軸） -->
-           <!-- M: 始点（上部中央） -->
-           <!-- C: 三次ベジェ曲線で滑らかな形状 -->
-           <!-- 左下(45,85) ↔ 右下(55,85)で完全対称 -->
-
+          <!-- リンゴの本体（グラデーション適用） -->
           <path class="apple-body" d="
             M 50,25
             C 30,25 20,35 20,50
@@ -403,16 +418,17 @@
             C 50,81 50,81 55,81
             C 72,81 80,65 80,50
             C 80,35 70,25 50,25 Z
-          " />
+          " fill="url(#appleGradient)" />
+
           <!-- リンゴの茎 -->
           <path class="apple-stem" d="M 50,16 L 49,32" stroke-width="2" fill="none" />
+
           <!-- リンゴの根本の軸（下向き曲線） -->
           <path class="apple-curve" d="M 44,31 Q 50,35 55,30" stroke-width="1.5" fill="none" stroke-linecap="round" />
-        <!-- テキスト（SVG内） -->
-        <text class="apple-text" x="50" y="61" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-        font-size="20" font-weight="bold" text-anchor="middle">YES</text>
-      
-      
+
+          <!-- テキスト（SVG内） -->
+          <text class="apple-text" x="50" y="61" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+            font-size="20" font-weight="bold" text-anchor="middle">YES</text>
       </svg>
     </button>
     

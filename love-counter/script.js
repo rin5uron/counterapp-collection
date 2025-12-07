@@ -5,6 +5,23 @@ const countDisplay = document.getElementById('count');
 const specialMessageElement = document.getElementById('specialMessage');
 let count = 0;
 
+// ========================================
+// 100vh問題の対策（--dvh設定）
+// ========================================
+
+function setDynamicViewportHeight() {
+  // window.innerHeightを使ってカスタム高さ変数を設定
+  const vh = window.innerHeight;
+  document.documentElement.style.setProperty('--dvh', `${vh}px`);
+}
+
+// 初回設定
+setDynamicViewportHeight();
+
+// リサイズやオリエンテーション変更時に再設定
+window.addEventListener('resize', setDynamicViewportHeight);
+window.addEventListener('orientationchange', setDynamicViewportHeight);
+
 let triggers1 = [
   "YES",
 ];
@@ -73,6 +90,22 @@ mainButton.addEventListener("click", function() {
   // ランダムなメッセージを表示
   const currentMessage = messages1[getRandomIndex(messages1)];
   message.innerHTML = currentMessage;
+
+  // タップ後のスクロール補正（結果が見えるように）
+  setTimeout(() => {
+    const messageElement = document.getElementById('message');
+    const messageRect = messageElement.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    // メッセージが画面下部に隠れている場合、少しだけスクロール
+    if (messageRect.bottom > windowHeight - 60) {
+      messageElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'nearest'
+      });
+    }
+  }, 100);
 
   // 22で割り切れるときに特別メッセージとLINE送信フォームを表示
   if (count % 22 === 0 && count !== 0) {
