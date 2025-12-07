@@ -104,19 +104,19 @@ mainButton.addEventListener("click", function() {
   buttonText.textContent = triggers1[getRandomIndex(triggers1)];
 });
   
-// LINEに送信する関数（LIFF対応版）
-async function sendToLine(message) {
+// LINEに送信する関数（LIFF対応版、画像対応）
+async function sendToLine(message, imageData = null) {
   try {
     // ユーザーIDが取得できているか確認
     if (!userLineId) {
-      alert('userLineIdが取得できていません。LINEアプリで開いてください。');
+      alert('LINEIDが取得が必要です。LINEアプリで開いてください。');
       return;
     }
 
     // デバッグ用：送信内容を確認
-    console.log('送信データ:', { userId: userLineId, message: message });
+    console.log('送信データ:', { userId: userLineId, message: message, hasImage: !!imageData });
 
-    // バックエンドにユーザーIDとメッセージを送信
+    // バックエンドにユーザーIDとメッセージ、画像データを送信
     const response = await fetch('/api/send-message', {
       method: 'POST',
       headers: {
@@ -124,12 +124,13 @@ async function sendToLine(message) {
       },
       body: JSON.stringify({
         userId: userLineId,  // 送信者のLINE ID
-        message: message
+        message: message,
+        imageData: imageData // Base64画像データ（オプション）
       })
     });
 
     if (response.ok) {
-      alert('LINEに送信しました！');
+      alert('Kのアカウントに回答を送信しました！');
     } else {
       const error = await response.json();
       alert('送信エラー\nステータス: ' + response.status + '\nエラー内容: ' + JSON.stringify(error));
@@ -149,17 +150,21 @@ document.getElementById('sendButton').addEventListener('click', async function()
   // 質問内容を取得（data属性から）
   const questionText = replySection.getAttribute('data-question') || message.textContent;
 
-  if (replyText.trim()) {
+  // テキストまたは画像のいずれかが入力されているか確認
+  if (replyText.trim() || selectedImageData) {
     // 質問と返信を両方含めたメッセージを作成
-    const fullMessage = `【質問】\n${questionText.replace(/<br>/g, '\n')}\n\n【返信】\n${replyText}`;
+    const fullMessage = `【my question】\n${questionText.replace(/<br>/g, '\n')}\n\n【your answer】\n${replyText || '(画像のみ)'}`;
 
-    await sendToLine(fullMessage);
+    // メッセージと画像を送信
+    await sendToLine(fullMessage, selectedImageData);
+
     // 送信後、フォームをクリアして非表示
     replyInput.value = '';
     replySection.style.display = 'none';
     replySection.removeAttribute('data-question'); // data属性をクリア
+    clearImage(); // 画像もクリア
   } else {
-    alert('メッセージを入力してください');
+    alert('メッセージまたは画像を入力してください');
   }
 });
 
@@ -170,7 +175,58 @@ document.getElementById('cancelButton').addEventListener('click', function() {
   document.getElementById('replyInput').value = '';
   replySection.style.display = 'none';
   replySection.removeAttribute('data-question'); // data属性をクリア
+  clearImage(); // 画像もクリア
 });
+
+
+// ========================================
+// 画像添付機能
+// ========================================
+
+let selectedImageData = null; // 選択された画像データ（Base64）
+
+// 画像添付ボタンのイベントリスナー
+document.getElementById('imageAttachButton').addEventListener('click', function() {
+  document.getElementById('imageInput').click(); // ファイル選択ダイアログを開く
+});
+
+// 画像選択時の処理
+document.getElementById('imageInput').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+
+  if (file && file.type.startsWith('image/')) {
+    // 画像ファイルが選択された場合
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      // Base64データを保存
+      selectedImageData = e.target.result;
+
+      // プレビュー表示
+      document.getElementById('previewImg').src = selectedImageData;
+      document.getElementById('imagePreview').style.display = 'block';
+
+      console.log('画像が選択されました:', file.name);
+    };
+
+    reader.readAsDataURL(file); // ファイルをBase64に変換
+  } else {
+    alert('画像ファイルを選択してください');
+  }
+});
+
+// 画像削除ボタンのイベントリスナー
+document.getElementById('removeImageButton').addEventListener('click', function() {
+  clearImage();
+});
+
+// 画像クリア関数
+function clearImage() {
+  selectedImageData = null;
+  document.getElementById('imageInput').value = ''; // input要素をリセット
+  document.getElementById('previewImg').src = '';
+  document.getElementById('imagePreview').style.display = 'none';
+}
 
 
 // ========================================

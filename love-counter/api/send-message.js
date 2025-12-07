@@ -84,19 +84,20 @@ module.exports = async (req, res) => {
   // ステップ4: メイン処理（メッセージ送信）
   // ----------------------------------------
   try {
-    // リクエストボディからメッセージとユーザーIDを取得
-    // フロントエンド（LIFF）から { userId: "Uxxxxx", message: "こんにちは" } という形式で送られてくる
-    const { userId, message } = req.body;
+    // リクエストボディからメッセージ、ユーザーID、画像データを取得
+    // フロントエンド（LIFF）から { userId: "Uxxxxx", message: "こんにちは", imageData: "data:image/png;base64,..." } という形式で送られてくる
+    const { userId, message, imageData } = req.body;
 
     // ---------------------------------
     // メッセージとユーザーIDの検証
     // ---------------------------------
-    // 1. messageが存在しない → NG
-    // 2. messageが文字列じゃない → NG
-    // 3. messageが空文字（スペースのみも含む） → NG
-    if (!message || typeof message !== 'string' || message.trim() === '') {
+    // メッセージまたは画像データのいずれかが必要
+    const hasValidMessage = message && typeof message === 'string' && message.trim() !== '';
+    const hasValidImage = imageData && typeof imageData === 'string';
+
+    if (!hasValidMessage && !hasValidImage) {
       // 400 Bad Request = クライアント側のリクエストが不正
-      return res.status(400).json({ error: 'Invalid message' });
+      return res.status(400).json({ error: 'Message or image is required' });
     }
 
     // userIdが存在しない → NG
@@ -122,13 +123,73 @@ module.exports = async (req, res) => {
     // pushMessage = ユーザーに対してメッセージを「プッシュ配信」
     // （ユーザーからのメッセージに返信するreplyMessageとは違う）
     // LIFF実装後: フロントエンドから受け取ったuserIdを使用
-    await client.pushMessage(userId, {
-      type: 'text',        // メッセージのタイプ（テキスト）
-      text: message        // 送信するテキスト内容
-    });
+
+    const messages = [];
+
+    // テキストメッセージがある場合は追加
+    if (hasValidMessage) {
+      messages.push({
+        type: 'text',
+        text: message
+      });
+    }
+
+    // 画像データがある場合は、imgurにアップロードしてURLを取得
+    if (hasValidImage) {
+      try {
+        // Base64データから "data:image/png;base64," などのプレフィックスを削除
+        const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
+
+        // imgur APIに画像をアップロード
+        const imgurResponse = await fetch('https://api.imgur.com/3/image', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Client-ID ${process.env.IMGUR_CLIENT_ID || 'f4426173dbf7575'}`, // 匿名アップロード用のClient ID
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            image: base64Data,
+            type: 'base64'
+          })
+        });
+
+        const imgurData = await imgurResponse.json();
+
+        if (imgurData.success && imgurData.data && imgurData.data.link) {
+          const imageUrl = imgurData.data.link;
+          console.log('Image uploaded to imgur:', imageUrl);
+
+          // 画像メッセージを追加
+          messages.push({
+            type: 'image',
+            originalContentUrl: imageUrl,
+            previewImageUrl: imageUrl
+          });
+        } else {
+          console.error('Failed to upload image to imgur:', imgurData);
+          // 画像アップロード失敗時はテキストで通知
+          messages.push({
+            type: 'text',
+            text: '※画像のアップロードに失敗しました'
+          });
+        }
+      } catch (uploadError) {
+        console.error('Error uploading image:', uploadError);
+        // 画像アップロード失敗時はテキストで通知
+        messages.push({
+          type: 'text',
+          text: '※画像のアップロードに失敗しました'
+        });
+      }
+    }
+
+    // メッセージを送信
+    if (messages.length > 0) {
+      await client.pushMessage(userId, messages);
+    }
 
     // 成功ログを出力（Vercelのログで確認できる）
-    console.log('Message sent successfully to userId:', userId, 'message:', message);
+    console.log('Message sent successfully to userId:', userId, 'messages:', messages.length);
 
     // フロントエンドに成功レスポンスを返す
     // 200 OK = 正常に処理完了

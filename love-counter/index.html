@@ -232,6 +232,70 @@
   cursor: pointer;
 }
 
+/* 画像添付セクション */
+.image-attach-section {
+  margin-top: 12px;
+}
+
+.image-attach-button {
+  width: 100%;
+  padding: 12px;
+  background: #FFF5F0;
+  color: #6B5B4F;
+  border: 2px dashed #E8D5C4;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.image-attach-button:hover {
+  background: #FFE8DC;
+  border-color: #D46A6A;
+}
+
+.image-preview {
+  margin-top: 12px;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 100%;
+  border: 2px solid #E8D5C4;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  display: block;
+}
+
+.remove-image-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background: rgba(212, 106, 106, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.remove-image-button:hover {
+  background: rgba(193, 93, 93, 1);
+  transform: scale(1.1);
+}
+
     @keyframes sparkle {
       0%, 100% {
         transform: scale(1);
@@ -365,7 +429,21 @@
           rows="4"
           maxlength="500"
         ></textarea>
-      
+
+        <!-- 画像選択エリア -->
+        <div class="image-attach-section">
+          <input type="file" id="imageInput" accept="image/*" style="display: none;">
+          <button type="button" id="imageAttachButton" class="image-attach-button">
+            📷 画像を添付
+          </button>
+
+          <!-- 画像プレビューエリア -->
+          <div id="imagePreview" class="image-preview" style="display: none;">
+            <img id="previewImg" src="" alt="プレビュー">
+            <button type="button" id="removeImageButton" class="remove-image-button">✕</button>
+          </div>
+        </div>
+
         <!-- 送信ボタン -->
         <button id="sendButton" class="send-button">
           LINEに送信
