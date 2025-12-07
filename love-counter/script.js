@@ -71,7 +71,8 @@ mainButton.addEventListener("click", function() {
   countDisplay.textContent = count;
 
   // ランダムなメッセージを表示
-  message.innerHTML = messages1[getRandomIndex(messages1)];
+  const currentMessage = messages1[getRandomIndex(messages1)];
+  message.innerHTML = currentMessage;
 
   // 22で割り切れるときに特別メッセージとLINE送信フォームを表示
   if (count % 22 === 0 && count !== 0) {
@@ -80,6 +81,9 @@ mainButton.addEventListener("click", function() {
 
     // LINE送信フォームを表示
     document.getElementById('replySection').style.display = "block";
+
+    // 現在のメッセージを送信フォームのdata属性に保存（質問内容を記録）
+    document.getElementById('replySection').setAttribute('data-question', currentMessage);
 
     // ボタンを一時的に無効化
     mainButton.disabled = true;
@@ -140,12 +144,20 @@ async function sendToLine(message) {
 document.getElementById('sendButton').addEventListener('click', async function() {
   const replyInput = document.getElementById('replyInput');
   const replyText = replyInput.value;
+  const replySection = document.getElementById('replySection');
+
+  // 質問内容を取得（data属性から）
+  const questionText = replySection.getAttribute('data-question') || message.textContent;
 
   if (replyText.trim()) {
-    await sendToLine(replyText);
+    // 質問と返信を両方含めたメッセージを作成
+    const fullMessage = `【質問】\n${questionText.replace(/<br>/g, '\n')}\n\n【返信】\n${replyText}`;
+
+    await sendToLine(fullMessage);
     // 送信後、フォームをクリアして非表示
     replyInput.value = '';
-    document.getElementById('replySection').style.display = 'none';
+    replySection.style.display = 'none';
+    replySection.removeAttribute('data-question'); // data属性をクリア
   } else {
     alert('メッセージを入力してください');
   }
@@ -154,8 +166,10 @@ document.getElementById('sendButton').addEventListener('click', async function()
 // キャンセルボタンのイベントリスナー
 document.getElementById('cancelButton').addEventListener('click', function() {
   // フォームをクリアして非表示
+  const replySection = document.getElementById('replySection');
   document.getElementById('replyInput').value = '';
-  document.getElementById('replySection').style.display = 'none';
+  replySection.style.display = 'none';
+  replySection.removeAttribute('data-question'); // data属性をクリア
 });
 
 
