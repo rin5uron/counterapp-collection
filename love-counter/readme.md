@@ -34,14 +34,26 @@
 
 ### 💬 友達追加時のウェルカムメッセージ
 
-```
-来てくれて嬉しいよ。
+<img src="./docs/images/あいさつ2.png" width="500" alt="ウェルカムメッセージ">
 
-ここはあなたとだけ話すところだから、一斉配信とかはしないよ。
+### 🔑 キーワード自動応答
 
-…でも、もしブロックしたら、ちゃんと気づくからね？
-まぁ、しないよね？（にこ）
-```
+「**ねえねえ**」と送信すると、アプリのURLが自動で送られてきます。
+
+<img src="./docs/images/ねえねえ応答.png" width="400" alt="キーワード自動応答">
+
+### 📌 重要な仕様（フェーズ3）
+
+現在の実装（`pushMessage`方式）では、以下の制約があります：
+
+- ✅ アプリからLINEにメッセージを送信できる
+- ❌ **ユーザーが一度も直接メッセージ/スタンプを送っていない場合、公式LINE管理画面にチャットが表示されない**
+
+**対策：**
+1. ユーザーに「最初に何か送ってね」と促す
+2. フェーズ4で`liff.sendMessages()`方式に変更（ユーザー本人から送信する形式）
+
+詳細は [フェーズ4実装ガイド](./docs/phase/phase4/liff-sendmessages-implementation.md) を参照
 <br>
 <br>
 
@@ -50,7 +62,8 @@
 ## 🌐 デモURL
 
 - **Phase1**: [基本機能](https://love-counter-git-phase1-rs-projects-9c94598c.vercel.app/)
-- **Phase2**: [Apple風デザイン](https://love-counter-git-phase2-rs-projects-9c94598c.vercel.app/) ← 最新版
+- **Phase2**: [Apple風デザイン](https://love-counter-git-phase2-rs-projects-9c94598c.vercel.app/)
+- **Phase3**: [LINE連携版](https://love-counter-git-phase3-rs-projects-9c94598c.vercel.app/) ← 最新版
 
 
 <br>
@@ -95,14 +108,23 @@
 
 ## 📚 関連ドキュメント
 
+### 基本ドキュメント
 | ドキュメント | 内容 |
 |-------------|------|
 | **[📝 仕様書](./docs/spec.md)** | 画面構成、機能仕様、データ構造、実装詳細 |
 | **[🎨 デザインコンセプト](./docs/DESIGN.md)** | Apple風デザイン、カラーパレット、SVGボタン |
 | **[📈 フェーズ計画](./docs/PROJECT_PHASES.md)** | 開発ロードマップ、学習目標、実装状況 |
 | **[📖 学習メモ](./docs/learning-notes.md)** | 技術的な学習記録 |
-| **[🔧 SVG調整ガイド](./docs/phase2/SVG調整ガイド.md)** | りんごボタンのカスタマイズ方法 |
-| **[🔗 LINE連携手順](./docs/phase3/process.md)** | フェーズ3実装手順書 |
+
+### フェーズ別ドキュメント
+| フェーズ | ドキュメント | 内容 |
+|---------|-------------|------|
+| **Phase 2** | **[🔧 SVG調整ガイド](./docs/phase/phase2/SVG調整ガイド.md)** | りんごボタンのカスタマイズ方法 |
+| **Phase 3** | **[🔗 LINE連携手順](./docs/phase/phase3/process.md)** | LIFF実装、Webhook設定、エラー解決 |
+| **Phase 3** | **[📘 LIFF実装ガイド](./docs/phase/phase3/LIFF実装ガイド.md)** | LIFF詳細設定、トラブルシューティング |
+| **Phase 4** | **[🔧 技術的な改善](./docs/phase/phase4/process.md)** | liff.sendMessages対応、2バージョン作成 |
+| **Phase 4** | **[📖 liff.sendMessages実装ガイド](./docs/phase/phase4/liff-sendmessages-implementation.md)** | チャット表示問題の解決 |
+| **Phase 5** | **[🚀 公式LINE運用計画](./docs/phase/phase5/process.md)** | リッチメニュー、ステップ配信、ビジネス展開（1〜3月） |
 
 **詳細な仕様・データ構造は [📝 仕様書](./docs/spec.md) を参照してください**
 
@@ -135,7 +157,9 @@ love-counter/
 
 - ✅ **フェーズ1**: 基本機能（ランダムメッセージ、カウント、特別メッセージ）
 - ✅ **フェーズ2**: Apple風デザイン（SVGりんごボタン、洗練されたUI）
-- 🚧 **フェーズ3**: LINE連携機能（LIFF実装、進行中）
+- ✅ **フェーズ3**: LINE連携機能（LIFF実装、画像送信、返信フォーム）
+- 🚧 **フェーズ4**: 技術的な改善（liff.sendMessages対応、2バージョン作成）
+- 📅 **フェーズ5**: 公式LINE運用開始（リッチメニュー、ステップ配信、ビジネス展開）
 
 詳細は [フェーズ計画](./docs/PROJECT_PHASES.md) を参照
 
@@ -143,4 +167,4 @@ love-counter/
 ---
 
 **作成**: Claude Code
-**最終更新**: 2025-12-06
+**最終更新**: 2025-12-12
