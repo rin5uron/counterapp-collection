@@ -38,17 +38,43 @@
 
 ### 1. LIFF設定でScopeを追加
 
-#### LINE Developers Consoleで設定
+#### LINE Developers Consoleで設定（詳細手順）
 
+**ステップ1: LINE Developers Consoleにアクセス**
 1. [LINE Developers Console](https://developers.line.biz/console/) にアクセス
-2. プロバイダー → チャネルを選択
-3. 左メニューの「LIFF」をクリック
-4. 該当のLIFFアプリ（love-counter）を選択
-5. **Scopesセクション**で以下にチェック：
-   - ☑️ `profile`
-   - ☑️ `openid`
-   - ☑️ **`chat_message.write`** ← 追加
-6. 「Update」ボタンで保存
+2. LINEアカウントでログイン
+
+**ステップ2: チャネルを選択**
+1. プロバイダーを選択（例：`rin5uron`）
+2. チャネルを選択（例：`love-counter公式LINE`）
+
+**ステップ3: LIFF設定画面を開く**
+1. 左側のメニューから **「LIFF」** をクリック
+2. LIFF アプリのリストが表示される
+3. 該当のLIFFアプリ（`love-counter`）の **「Edit」** または **アプリ名** をクリック
+
+**ステップ4: Scopesセクションを見つける**
+- LIFF設定画面が表示されます
+- 上から順に以下の項目が並んでいます：
+  - **LIFF app name**（アプリ名）
+  - **Scopes** ← **ここです！**
+  - **Endpoint URL**
+  - **Scope bot prompt**
+  - など
+
+**ステップ5: chat_message.writeを追加**
+- **Scopes**セクションで、以下にチェックを入れる：
+  - ☑️ `profile`（既にチェック済み）
+  - ☑️ `openid`（既にチェック済み）
+  - ☑️ **`chat_message.write`** ← **これを追加**
+
+**ステップ6: 保存**
+- 画面下部の **「Update」** ボタンをクリック
+- 保存完了
+
+**ステップ7: 反映を確認**
+- LINEアプリを一度終了して再起動
+- アプリを開くと新しいスコープが反映される
 
 ---
 
