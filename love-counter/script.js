@@ -104,44 +104,45 @@ mainButton.addEventListener("click", function() {
   buttonText.textContent = triggers1[getRandomIndex(triggers1)];
 });
   
-// LINEに送信する関数（LIFF対応版）
+// LINEに送信する関数（liff.sendMessages()方式）
 async function sendToLine(message) {
   try {
-    // ユーザーIDが取得できているか確認
-    if (!userLineId) {
-      alert('userLineIdが取得できていません。LINEアプリで開いてください。');
+    // LINEアプリ内でしか送信できないためチェック
+    if (!liff.isInClient()) {
+      alert('LINEアプリ内で開いてください。\n外部ブラウザでは送信できません。');
       return;
     }
 
-    // デバッグ用：送信内容を確認
-    console.log('送信データ:', { userId: userLineId, message: message });
+    const messages = [];
 
-    // バックエンドにユーザーIDとメッセージを送信
-    const response = await fetch('/api/send-message', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: userLineId,  // 送信者のLINE ID
-        message: message
-      })
-    });
-
-    if (response.ok) {
-      alert('LINEに送信しました！');
-    } else {
-      const error = await response.json();
-      alert('送信エラー\nステータス: ' + response.status + '\nエラー内容: ' + JSON.stringify(error));
+    // テキストメッセージ
+    if (message && message.trim() !== '') {
+      messages.push({
+        type: 'text',
+        text: message
+      });
     }
+
+    // liff.sendMessages()で送信
+    if (messages.length > 0) {
+      await liff.sendMessages(messages);
+      alert('公式LINEアカウントに送信しました！');
+    }
+
   } catch (error) {
     console.error('Error:', error);
-    alert('通信エラー: ' + error.message);
+    alert('送信エラー: ' + error.message);
   }
 }
 
-// 送信ボタンのイベントリスナー
+// 送信ボタンのイベントリスナー（連続タップ防止付き）
+let isSending = false; // 送信中フラグ
+
 document.getElementById('sendButton').addEventListener('click', async function() {
+  // 送信中は何もしない
+  if (isSending) return;
+
+  const sendButton = document.getElementById('sendButton');
   const replyInput = document.getElementById('replyInput');
   const replyText = replyInput.value;
   const replySection = document.getElementById('replySection');
@@ -150,14 +151,27 @@ document.getElementById('sendButton').addEventListener('click', async function()
   const questionText = replySection.getAttribute('data-question') || message.textContent;
 
   if (replyText.trim()) {
-    // 質問と返信を両方含めたメッセージを作成
-    const fullMessage = `【質問】\n${questionText.replace(/<br>/g, '\n')}\n\n【返信】\n${replyText}`;
+    try {
+      // 送信中フラグを立てる
+      isSending = true;
+      sendButton.disabled = true;
+      sendButton.textContent = '送信中...';
 
-    await sendToLine(fullMessage);
-    // 送信後、フォームをクリアして非表示
-    replyInput.value = '';
-    replySection.style.display = 'none';
-    replySection.removeAttribute('data-question'); // data属性をクリア
+      // 質問と返信を両方含めたメッセージを作成
+      const fullMessage = `【質問】\n${questionText.replace(/<br>/g, '\n')}\n\n【返信】\n${replyText}`;
+
+      await sendToLine(fullMessage);
+
+      // 送信後、フォームをクリアして非表示
+      replyInput.value = '';
+      replySection.style.display = 'none';
+      replySection.removeAttribute('data-question'); // data属性をクリア
+    } finally {
+      // 確実に再有効化
+      isSending = false;
+      sendButton.disabled = false;
+      sendButton.textContent = '送信';
+    }
   } else {
     alert('メッセージを入力してください');
   }
