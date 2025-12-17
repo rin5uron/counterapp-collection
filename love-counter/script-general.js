@@ -149,12 +149,10 @@ async function uploadToImgur(imageData) {
 // LINEに送信する関数（liff.sendMessages()方式）
 async function sendToLine(message, imageData = null) {
   try {
-    // LINEアプリ内でしか送信できないためチェック
-    if (!liff.isInClient()) {
-      alert('LINEアプリ内で開いてください。\n外部ブラウザでは送信できません。');
-      return;
-    }
-
+    // デバッグ: 環境情報をログに出力
+    console.log('isInClient:', liff.isInClient());
+    console.log('isLoggedIn:', liff.isLoggedIn());
+    
     const messages = [];
 
     // テキストメッセージ
@@ -189,7 +187,12 @@ async function sendToLine(message, imageData = null) {
 
   } catch (error) {
     console.error('Error:', error);
-    alert('送信エラー: ' + error.message);
+    // エラーメッセージに応じて適切なメッセージを表示
+    if (error.message && error.message.includes('not in LINE')) {
+      alert('LINEアプリ内で開いてください。\n外部ブラウザでは送信できません。');
+    } else {
+      alert('送信エラー: ' + error.message);
+    }
   }
 }
 
@@ -255,15 +258,15 @@ let userLineId = null; // ユーザーのLINE ID（グローバル変数）
 
 async function initializeLiff() {
   try {
-    // デバッグ: LIFF初期化開始を表示
-    console.log('LIFF初期化開始...');
+    // LINEアプリとの連携を開始（開発者用ログ）
+    console.log('アプリ読み込み開始...');
 
     await liff.init({ liffId: '2008641870-nLbJegy4' });
 
-    console.log('LIFF初期化完了。ログイン状態:', liff.isLoggedIn());
+    console.log('アプリ読み込み完了。ログイン状態:', liff.isLoggedIn());
 
     if (!liff.isLoggedIn()) {
-      console.log('未ログイン。ログイン画面へ');
+      console.log('ログイン処理中...');
       console.log('現在のURL:', window.location.href);
       // ログイン画面を表示せずに、自動的にログイン
       // redirectUriを明示的に指定
@@ -272,25 +275,24 @@ async function initializeLiff() {
     }
 
     // ログイン済みの場合、プロフィール取得
-    console.log('ログイン済み。プロフィール取得中...');
+    console.log('ユーザー情報取得中...');
     const profile = await liff.getProfile();
     userLineId = profile.userId;
     console.log('User ID:', userLineId);
     console.log('Display Name:', profile.displayName);
 
-    // デバッグ用：画面に表示
-    alert('LIFF初期化成功！\nUser ID: ' + userLineId + '\nName: ' + profile.displayName);
+    // 成功時はアラートを表示しない（自然な動作）
 
   } catch (error) {
-    console.error('LIFF initialization failed', error);
-    alert('LIFF初期化エラー: ' + error.message);
+    console.error('アプリ読み込みエラー:', error);
+    alert('アプリの読み込みに失敗しました。\nしばらく時間をおいてから再度お試しください。');
   }
 }
 
-// ページ読み込み時にLIFFを初期化（必ず実行）
+// ページ読み込み時にアプリを初期化（必ず実行）
 if (typeof liff !== 'undefined') {
   initializeLiff();
 } else {
-  console.error('LIFF SDKが読み込まれていません');
-  alert('LIFF SDKエラー: SDKが読み込まれていません');
+  console.error('アプリの読み込みに失敗しました');
+  alert('アプリの読み込みに失敗しました。\nページを再読み込みしてください。');
 }

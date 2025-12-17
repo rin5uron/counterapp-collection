@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>私のこと好き？</title>
+  <title>今日も元気？</title>
   <style>
     :root {
       /* ベース */
@@ -52,9 +52,10 @@
       border-radius: 20px;
       box-shadow: 0 2px 8px var(--shadow-soft);
       max-width: 340px;
-      width: 90%;
+      width: 100%;
       text-align: center;
       border: 1px solid var(--border-light);
+      box-sizing: border-box;
     }
 
     #triggerText {
@@ -175,68 +176,70 @@
     }
 
     .reply-section {
-  margin-top: 32px;
-  padding: 24px;
-  background: #FFF5F0;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
+      margin-top: 24px;
+      padding: 16px;
+      background: #FFF5F0;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
 
-/* テキストエリア */
-.reply-section textarea {
-  width: 100%;
-  padding: 16px;
-  border: 2px solid #E8D5C4;
-  border-radius: 12px;
-  font-size: 16px;
-  font-family: inherit;
-  resize: vertical;
-  min-height: 100px;
-}
+    /* テキストエリア */
+    .reply-section textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #E8D5C4;
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 60px;
+      max-height: 80px;
+      box-sizing: border-box;
+    }
 
-.reply-section textarea:focus {
-  outline: none;
-  border-color: #A8D46F;
-}
+    .reply-section textarea:focus {
+      outline: none;
+      border-color: #A8D46F;
+    }
 
-/* 送信ボタン */
-.send-button {
-  width: 100%;
-  margin-top: 16px;
-  padding: 16px;
-  background: #A8D46F;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+    /* 送信ボタン */
+    .send-button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      background: #A8D46F;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
 .send-button:hover {
   background: #95C15E;
   transform: translateY(-2px);
 }
 
-.send-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-  transform: none;
-}
+    .send-button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
 
-/* キャンセルボタン */
-.cancel-button {
-  width: 100%;
-  margin-top: 8px;
-  padding: 12px;
-  background: transparent;
-  color: #666;
-  border: 2px solid #E8D5C4;
-  border-radius: 12px;
-  font-size: 14px;
-  cursor: pointer;
-}
+    /* キャンセルボタン */
+    .cancel-button {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px;
+      background: transparent;
+      color: #666;
+      border: 2px solid #E8D5C4;
+      border-radius: 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
 
     @keyframes sparkle {
       0%, 100% {
@@ -327,7 +330,7 @@
 
 <body>
   <div class="card">
-<p id="triggerText">私のこと好き？？
+<p id="triggerText">今日も元気？
 </p>
     <button id="mainButton">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -361,7 +364,7 @@
 
     <p id="message"></p>
     <div class="counter">
-      私のこと好き度：<span id="count">0</span> %
+      今日の元気度：<span id="count">0</span> %
       <p id="specialMessage"></p>
       <div class="reply-section" id="replySection" style="display: none;">
 
@@ -369,7 +372,7 @@
         <textarea
           id="replyInput"
           placeholder="返信を入力..."
-          rows="4"
+          rows="2"
           maxlength="500"
         ></textarea>
 
