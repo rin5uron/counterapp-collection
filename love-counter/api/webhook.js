@@ -15,9 +15,14 @@
  * 2. 環境変数（認証情報）を確認
  * 3. リクエストボディからイベントを取得
  * 4. イベントの種類ごとに処理を振り分け
- *    - メッセージイベント → エコー返信
+ *    - メッセージイベント → 自動応答なし（手動返信用）
  *    - フォローイベント → ウェルカムメッセージ
  *    - アンフォローイベント → ログ出力
+ * 
+ * 【注意】
+ * - メッセージイベントでは自動返信を送らない（手動返信用）
+ * - LINE公式アカウントの管理画面で「応答メッセージ」も無効化すること
+ *   設定 → 応答設定 → 応答メッセージ → OFF
  *
  * 【必要な環境変数】
  * - LINE_CHANNEL_ACCESS_TOKEN: LINEボットの認証トークン
@@ -146,27 +151,12 @@ async function handleEvent(event) {
     const userMessage = event.message.text;
     console.log('User message:', userMessage);
 
-    // ---------------------------------
-    // エコー返信（オウム返し）
-    // ---------------------------------
-    // ユーザーが送ったメッセージをそのまま返す
-    const echo = {
-      type: 'text',                          // メッセージタイプ
-      text: `受け取りました: ${userMessage}`  // 返信内容
-    };
-
-    try {
-      // replyMessage = ユーザーのメッセージに「返信」する
-      // （pushMessageと違って、返信先が自動的に決まる）
-      //
-      // replyToken = 「このメッセージに返信してね」という一時的なトークン
-      // 注意: replyTokenは1回しか使えない！
-      await client.replyMessage(event.replyToken, echo);
-      console.log('Reply sent successfully');
-    } catch (error) {
-      console.error('Error replying to message:', error);
-      throw error; // エラーを上位に伝える
-    }
+    // 自動応答を削除：手動で返信するため
+    // Webhookはイベントを受け取るだけで、自動応答しない
+    // 
+    // 【重要】LINE公式アカウントの管理画面でも「応答メッセージ」を無効化すること
+    // 設定 → 応答設定 → 応答メッセージ → OFF
+    // これをしないと「受け取りました：ねえねえ」のような自動返信が送られる
   }
 
   // ========================================

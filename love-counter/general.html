@@ -176,10 +176,34 @@
 
     .reply-section {
   margin-top: 32px;
-  padding: 24px;
+  padding: 20px;
   background: #FFF5F0;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 質問表示エリア */
+.question-display {
+  background: white;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-left: 4px solid #A8D46F;
+}
+
+.question-label {
+  font-size: 11px;
+  color: #95C15E;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.question-display p {
+  margin: 8px 0 0;
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.5;
 }
 
 /* テキストエリア */
@@ -365,11 +389,17 @@
       <p id="specialMessage"></p>
       <div class="reply-section" id="replySection" style="display: none;">
 
+        <!-- 質問表示エリア -->
+        <div class="question-display" id="questionDisplay">
+          <span class="question-label">My Question</span>
+          <p id="questionText"></p>
+        </div>
+
         <!-- テキストエリア（複数行のテキスト入力） -->
         <textarea
           id="replyInput"
-          placeholder="返信を入力..."
-          rows="4"
+          placeholder="Your Answer..."
+          rows="3"
           maxlength="500"
         ></textarea>
 
@@ -385,12 +415,13 @@
 
     </div>
   </div>
+  </div>
 
 
 <!-- LIFF SDK= LINEが提供しているJavaScriptライブラリ読み込み -->
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-<!-- script.js にLIFF SDKが必要なのでこの順番で読み込む-->
-<script src="script.js"></script>
+<!-- script-general.js にLIFF SDKが必要なのでこの順番で読み込む-->
+<script src="script-general.js"></script>
 
 </body>
 </html>
