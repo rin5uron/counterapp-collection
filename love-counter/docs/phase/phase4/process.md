@@ -28,54 +28,37 @@
 - 公式LINE管理画面でチャットを確実に表示
 
 **実装内容：**
-- [ ] LIFF設定で `chat_message.write` スコープを追加
-- [ ] `script.js` の `sendToLine()` を変更
-- [ ] `liff.isInClient()` チェックを追加
-- [ ] `api/webhook.js` で「【my question】」チェックを追加
+- [x] LIFF設定で `chat_message.write` スコープを追加
+- [x] `script.js` の `sendToLine()` を変更
+- [x] `liff.isInClient()` チェックを追加
+- [x] `api/webhook.js` をランダム応答に変更（キーワード対応はLINE公式アカウントの自動応答機能で対応）
 - [ ] テスト：公式LINE管理画面でチャット表示を確認
 
 **詳細実装ガイド：** [liff.sendMessages()実装ガイド](./liff-sendmessages-implementation.md)
 
 ---
 
-### 2. 2バージョンの作成
+### 2. 2バージョンの作成 ✅完了
 
 #### バージョンA: 健全版（全員用）
 - **対象**: 友達追加してくれた全員
 - **メッセージ内容**: 健全で楽しいメッセージ
 - **配布方法**: 公式アカウントから配布
-- **URL例**: `https://love-counter-theta.vercel.app/`
+- **URL**: `https://love-counter-theta.vercel.app/general`
+- **デザイン**: 青リンゴ（黄緑色）
 
 #### バージョンB: 個人版（親しい人用）
 - **対象**: 親しい友達のみ
-- **メッセージ内容**: より親密な内容（現在のメッセージ）
+- **メッセージ内容**: より親密な内容
 - **配布方法**: 手動でURLを送る
-- **URL例**: `https://love-counter-theta.vercel.app/special`
+- **URL**: `https://love-counter-theta.vercel.app/`
+- **デザイン**: 赤リンゴ
 
 **技術的な実装：**
-```javascript
-// URL判定でメッセージ配列を切り替え
-const isSpecialVersion = window.location.pathname.includes('/special');
-
-const messages = isSpecialVersion ? messagesSpecial : messagesGeneral;
-
-// 健全版メッセージ
-const messagesGeneral = [
-  "今日も元気？",
-  "最近どう？",
-  "またね！",
-  // ... 健全なメッセージ
-];
-
-// 個人版メッセージ（現在のもの）
-const messagesSpecial = [
-  "もう眠いから一緒に寝よ〜",
-  "私に会いたい？？え〜〜",
-  // ... 現在のメッセージ
-];
-```
-
-**実装場所：** `script.js`
+- `index.html` + `script.js` = 個人版（赤リンゴ）
+- `general.html` + `script-general.js` = 健全版（青リンゴ）
+- 完全に独立した2つのHTMLファイル
+- Vercelが自動的に両方のURLをデプロイ
 
 ---
 

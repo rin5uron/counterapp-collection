@@ -11,12 +11,12 @@
       --white: #FFFFFF;           /* カード背景 */
       --white-soft: #FFF5F0;      /* テキスト用の柔らかい白（Apple風） */
 
-      /* りんごの色（青リンゴ） */
-      --apple-red: #A8D46F;       /* りんご本体（黄緑色） */
-      --apple-red-hover: #95C15E; /* ホバー時（濃い黄緑） */
+      /* りんごの色 */
+      --apple-red: #D46A6A;       /* りんご本体（落ち着いた赤） */
+      --apple-red-hover: #C15D5D; /* ホバー時（濃い赤） */
 
       /* アクセント */
-      --soft-red: #C8E6A4;        /* ボタン、ボーダー（緑系） */
+      --soft-red: #E8B4B8;        /* ボタン、ボーダー */
 
       /* テキスト */
       --text-primary: #6B5B4F;    /* メインテキスト */
@@ -190,7 +190,7 @@
 
 .reply-section textarea:focus {
   outline: none;
-  border-color: #A8D46F;
+  border-color: #D46A6A;
 }
 
 /* 送信ボタン */
@@ -198,7 +198,7 @@
   width: 100%;
   margin-top: 16px;
   padding: 16px;
-  background: #A8D46F;
+  background: #D46A6A;
   color: white;
   border: none;
   border-radius: 12px;
@@ -209,7 +209,7 @@
 }
 
 .send-button:hover {
-  background: #95C15E;
+  background: #C15D5D;
   transform: translateY(-2px);
 }
 
@@ -324,7 +324,7 @@
 </p>
     <button id="mainButton">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-
+          
 
           <!-- リンゴの本体 -->
            <!-- 左右対称なりんご（x=50を中心軸） -->
@@ -347,11 +347,11 @@
         <!-- テキスト（SVG内） -->
         <text class="apple-text" x="50" y="61" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
         font-size="20" font-weight="bold" text-anchor="middle">YES</text>
-
-
+      
+      
       </svg>
     </button>
-
+    
     <p id="message"></p>
     <div class="counter">
       私のこと好き度：<span id="count">0</span> %
@@ -365,25 +365,26 @@
           rows="4"
           maxlength="500"
         ></textarea>
-
+      
         <!-- 送信ボタン -->
         <button id="sendButton" class="send-button">
           LINEに送信
         </button>
-
+      
         <!-- キャンセルボタン（オプション） -->
         <button id="cancelButton" class="cancel-button">
           キャンセル
         </button>
-
+      
     </div>
   </div>
 
 
 <!-- LIFF SDK= LINEが提供しているJavaScriptライブラリ読み込み -->
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-<!-- script.js にLIFF SDKが必要なのでこの順番で読み込む-->
-<script src="script.js"></script>
+<!-- script-special.js にLIFF SDKが必要なのでこの順番で読み込む-->
+<script src="script-special.js"></script>
 
 </body>
 </html>
+

@@ -35,10 +35,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 100dvh;
+      justify-content: flex-start;
+      min-height: 100vh;
       margin: 0;
-      padding: 20px 16px;
+      padding-top: 40px;
     }
 
     .card {
@@ -246,10 +246,10 @@
     /* スマホ対応 */
     @media (max-width: 480px) {
       body {
-        padding: 16px;
-        min-height: 100dvh;
-        justify-content: flex-start;
-        padding-top: 60px;
+        padding: 24px 16px;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        padding-top: 32px;
       }
 
       .card {
@@ -382,8 +382,8 @@
 
 <!-- LIFF SDK= LINEが提供しているJavaScriptライブラリ読み込み -->
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-<!-- script.js にLIFF SDKが必要なのでこの順番で読み込む-->
-<script src="script.js"></script>
+<!-- script-general.js にLIFF SDKが必要なのでこの順番で読み込む-->
+<script src="script-general.js"></script>
 
 </body>
 </html>

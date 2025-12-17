@@ -213,7 +213,7 @@ document.getElementById('sendButton').addEventListener('click', async function()
       sendButton.textContent = '送信中...';
 
       // 質問と返信を両方含めたメッセージを作成
-      const fullMessage = `【my question】\n${questionText.replace(/<br>/g, '\n')}\n\n【your answer】\n${replyText}`;
+      const fullMessage = `【質問】\n${questionText.replace(/<br>/g, '\n')}\n\n【返信】\n${replyText}`;
 
       await sendToLine(fullMessage);
 

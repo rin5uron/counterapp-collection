@@ -146,27 +146,8 @@ async function handleEvent(event) {
     const userMessage = event.message.text;
     console.log('User message:', userMessage);
 
-    // ---------------------------------
-    // エコー返信（オウム返し）
-    // ---------------------------------
-    // ユーザーが送ったメッセージをそのまま返す
-    const echo = {
-      type: 'text',                          // メッセージタイプ
-      text: `受け取りました: ${userMessage}`  // 返信内容
-    };
-
-    try {
-      // replyMessage = ユーザーのメッセージに「返信」する
-      // （pushMessageと違って、返信先が自動的に決まる）
-      //
-      // replyToken = 「このメッセージに返信してね」という一時的なトークン
-      // 注意: replyTokenは1回しか使えない！
-      await client.replyMessage(event.replyToken, echo);
-      console.log('Reply sent successfully');
-    } catch (error) {
-      console.error('Error replying to message:', error);
-      throw error; // エラーを上位に伝える
-    }
+    // 自動応答を削除：手動で返信するため
+    // Webhookはイベントを受け取るだけで、自動応答しない
   }
 
   // ========================================
