@@ -255,8 +255,8 @@ async function initializeLiff() {
       console.log('未ログイン。ログイン画面へ');
       console.log('現在のURL:', window.location.href);
       // ログイン画面を表示せずに、自動的にログイン
-      // redirectUriを明示的に指定
-      liff.login({ redirectUri: 'https://love-counter-theta.vercel.app/' });
+      // redirectUriを明示的に指定（現在のURLを使用）
+      liff.login({ redirectUri: window.location.href });
       return; // ログインページに遷移するのでここで終了
     }
 
