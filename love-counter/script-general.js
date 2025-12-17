@@ -91,6 +91,9 @@ mainButton.addEventListener("click", function() {
     // 現在のメッセージを送信フォームのdata属性に保存（質問内容を記録）
     document.getElementById('replySection').setAttribute('data-question', currentMessage);
 
+    // 質問テキストを表示エリアに表示
+    document.getElementById('questionText').innerHTML = currentMessage;
+
     // ボタンを一時的に無効化
     mainButton.disabled = true;
     mainButton.style.opacity = "0.5";
@@ -213,12 +216,13 @@ document.getElementById('sendButton').addEventListener('click', async function()
       sendButton.textContent = '送信中...';
 
       // 質問と返信を両方含めたメッセージを作成
-      const fullMessage = `【質問】\n${questionText.replace(/<br>/g, '\n')}\n\n【返信】\n${replyText}`;
+      const fullMessage = `【My Question】\n${questionText.replace(/<br>/g, '\n')}\n\n【Your Answer】\n${replyText}`;
 
       await sendToLine(fullMessage);
 
       // 送信後、フォームをクリアして非表示
       replyInput.value = '';
+      document.getElementById('questionText').innerHTML = ''; // 質問テキストもクリア
       replySection.style.display = 'none';
       replySection.removeAttribute('data-question'); // data属性をクリア
     } finally {
@@ -237,6 +241,7 @@ document.getElementById('cancelButton').addEventListener('click', function() {
   // フォームをクリアして非表示
   const replySection = document.getElementById('replySection');
   document.getElementById('replyInput').value = '';
+  document.getElementById('questionText').innerHTML = ''; // 質問テキストもクリア
   replySection.style.display = 'none';
   replySection.removeAttribute('data-question'); // data属性をクリア
 });

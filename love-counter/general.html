@@ -36,9 +36,14 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      min-height: 100vh;
+      min-height: 100dvh;
+      min-height: -webkit-fill-available;
       margin: 0;
       padding-top: 40px;
+      overflow-x: hidden;
+      position: fixed;
+      width: 100%;
+      overflow-y: auto;
     }
 
     .card {
@@ -66,10 +71,10 @@
       background: none;
       cursor: pointer;
       padding: 0;
-      margin: 0 auto 24px auto;
+      margin: 0 auto 32px auto;
       transition: all 0.3s ease;
-      width: 150px;
-      height: 150px;
+      width: 180px;
+      height: 180px;
       display: block;
     }
 
@@ -112,6 +117,7 @@
     #message {
       min-height: 3.5em;
       font-size: 18px;
+      margin-top: 16px;
       margin-bottom: 20px;
       line-height: 1.6;
       color: var(--text-primary);
@@ -170,10 +176,34 @@
 
     .reply-section {
   margin-top: 32px;
-  padding: 24px;
+  padding: 20px;
   background: #FFF5F0;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 質問表示エリア */
+.question-display {
+  background: white;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-left: 4px solid #A8D46F;
+}
+
+.question-label {
+  font-size: 11px;
+  color: #95C15E;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.question-display p {
+  margin: 8px 0 0;
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.5;
 }
 
 /* テキストエリア */
@@ -247,7 +277,7 @@
     @media (max-width: 480px) {
       body {
         padding: 24px 16px;
-        min-height: 100vh;
+        min-height: 100dvh;
         min-height: -webkit-fill-available;
         padding-top: 32px;
       }
@@ -265,8 +295,8 @@
       }
 
       #mainButton {
-        width: 140px;
-        height: 140px;
+        width: 160px;
+        height: 160px;
         -webkit-tap-highlight-color: transparent;
         touch-action: manipulation;
       }
@@ -282,6 +312,7 @@
       #message {
         font-size: 19px;
         min-height: 4em;
+        margin-top: 20px;
         margin-bottom: 24px;
       }
 
@@ -303,8 +334,8 @@
       }
 
       #mainButton {
-        width: 120px;
-        height: 120px;
+        width: 140px;
+        height: 140px;
       }
 
       #mainButton .button-text {
@@ -358,11 +389,17 @@
       <p id="specialMessage"></p>
       <div class="reply-section" id="replySection" style="display: none;">
 
+        <!-- 質問表示エリア -->
+        <div class="question-display" id="questionDisplay">
+          <span class="question-label">My Question</span>
+          <p id="questionText"></p>
+        </div>
+
         <!-- テキストエリア（複数行のテキスト入力） -->
         <textarea
           id="replyInput"
-          placeholder="返信を入力..."
-          rows="4"
+          placeholder="Your Answer..."
+          rows="3"
           maxlength="500"
         ></textarea>
 
@@ -377,6 +414,7 @@
         </button>
 
     </div>
+  </div>
   </div>
 
 
