@@ -35,10 +35,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       min-height: 100dvh;
+      min-height: -webkit-fill-available;
       margin: 0;
-      padding: 20px 16px;
+      padding-top: 40px;
+      overflow-x: hidden;
+      position: fixed;
+      width: 100%;
+      overflow-y: auto;
     }
 
     .card {
@@ -66,10 +71,10 @@
       background: none;
       cursor: pointer;
       padding: 0;
-      margin: 0 auto 24px auto;
+      margin: 0 auto 32px auto;
       transition: all 0.3s ease;
-      width: 150px;
-      height: 150px;
+      width: 180px;
+      height: 180px;
       display: block;
     }
 
@@ -112,6 +117,7 @@
     #message {
       min-height: 3.5em;
       font-size: 18px;
+      margin-top: 16px;
       margin-bottom: 20px;
       line-height: 1.6;
       color: var(--text-primary);
@@ -246,10 +252,10 @@
     /* スマホ対応 */
     @media (max-width: 480px) {
       body {
-        padding: 16px;
+        padding: 24px 16px;
         min-height: 100dvh;
-        justify-content: flex-start;
-        padding-top: 60px;
+        min-height: -webkit-fill-available;
+        padding-top: 32px;
       }
 
       .card {
@@ -265,8 +271,8 @@
       }
 
       #mainButton {
-        width: 140px;
-        height: 140px;
+        width: 160px;
+        height: 160px;
         -webkit-tap-highlight-color: transparent;
         touch-action: manipulation;
       }
@@ -282,6 +288,7 @@
       #message {
         font-size: 19px;
         min-height: 4em;
+        margin-top: 20px;
         margin-bottom: 24px;
       }
 
@@ -303,8 +310,8 @@
       }
 
       #mainButton {
-        width: 120px;
-        height: 120px;
+        width: 140px;
+        height: 140px;
       }
 
       #mainButton .button-text {
