@@ -80,10 +80,17 @@ mainButton.addEventListener("click", function() {
     specialMessageElement.style.display = "block";
 
     // LINE送信フォームを表示
-    document.getElementById('replySection').style.display = "block";
+    const replySection = document.getElementById('replySection');
+    replySection.style.display = "block";
 
     // 現在のメッセージを送信フォームのdata属性に保存（質問内容を記録）
-    document.getElementById('replySection').setAttribute('data-question', currentMessage);
+    replySection.setAttribute('data-question', currentMessage);
+
+    // 画面が動かないように、現在のスクロール位置を保持
+    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    setTimeout(() => {
+      window.scrollTo(0, currentScrollTop);
+    }, 0);
 
     // ボタンを一時的に無効化
     mainButton.disabled = true;
@@ -141,8 +148,11 @@ async function uploadToImgur(imageData) {
 async function sendToLine(message, imageData = null) {
   try {
     // デバッグ: 環境情報をログに出力
+    console.log('=== 送信開始 ===');
+    console.log('現在のURL:', window.location.href);
     console.log('isInClient:', liff.isInClient());
     console.log('isLoggedIn:', liff.isLoggedIn());
+    console.log('userLineId:', userLineId);
     
     const messages = [];
 
@@ -172,20 +182,60 @@ async function sendToLine(message, imageData = null) {
 
     // liff.sendMessages()で送信
     if (messages.length > 0) {
+      console.log('送信するメッセージ:', messages);
       await liff.sendMessages(messages);
+      console.log('送信成功！');
       alert('公式LINEアカウントに送信しました！');
     }
 
   } catch (error) {
-    console.error('Error:', error);
+    console.error('=== 送信エラー ===');
+    console.error('エラー詳細:', error);
+    console.error('エラーメッセージ:', error.message);
+    console.error('エラースタック:', error.stack);
+    
     // エラーメッセージに応じて適切なメッセージを表示
     if (error.message && error.message.includes('not in LINE')) {
       alert('LINEアプリ内で開いてください。\n外部ブラウザでは送信できません。');
+    } else if (error.message && error.message.includes('invalid')) {
+      alert('送信に失敗しました。\nページを再読み込みして再度お試しください。');
     } else {
-      alert('送信エラー: ' + error.message);
+      alert('送信エラー: ' + (error.message || '不明なエラーが発生しました'));
     }
   }
 }
+
+// 画像選択機能
+let selectedImageData = null; // 選択された画像のBase64データ
+
+// 画像選択ボタンのクリックイベント
+document.querySelector('.image-label').addEventListener('click', function() {
+  document.getElementById('imageInput').click();
+});
+
+// 画像選択時の処理
+document.getElementById('imageInput').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      selectedImageData = event.target.result; // Base64データを保存
+      // プレビューを表示
+      const preview = document.getElementById('imagePreview');
+      const previewImage = document.getElementById('previewImage');
+      previewImage.src = selectedImageData;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// 画像削除ボタン
+document.getElementById('removeImage').addEventListener('click', function() {
+  selectedImageData = null;
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('imageInput').value = '';
+});
 
 // 送信ボタンのイベントリスナー（連続タップ防止付き）
 let isSending = false; // 送信中フラグ
@@ -202,7 +252,8 @@ document.getElementById('sendButton').addEventListener('click', async function()
   // 質問内容を取得（data属性から）
   const questionText = replySection.getAttribute('data-question') || message.textContent;
 
-  if (replyText.trim()) {
+  // テキストまたは画像のどちらかがあれば送信可能
+  if (replyText.trim() || selectedImageData) {
     try {
       // 送信中フラグを立てる
       isSending = true;
@@ -210,12 +261,17 @@ document.getElementById('sendButton').addEventListener('click', async function()
       sendButton.textContent = '送信中...';
 
       // 質問と返信を両方含めたメッセージを作成
-      const fullMessage = `【my question】\n${questionText.replace(/<br>/g, '\n')}\n\n【your answer】\n${replyText}`;
+      const fullMessage = replyText.trim() 
+        ? `【my question】\n${questionText.replace(/<br>/g, '\n')}\n\n【your answer】\n${replyText}`
+        : `【my question】\n${questionText.replace(/<br>/g, '\n')}\n\n【your answer】\n(画像のみ)`;
 
-      await sendToLine(fullMessage);
+      await sendToLine(fullMessage, selectedImageData);
 
       // 送信後、フォームをクリアして非表示
       replyInput.value = '';
+      selectedImageData = null;
+      document.getElementById('imagePreview').style.display = 'none';
+      document.getElementById('imageInput').value = '';
       replySection.style.display = 'none';
       replySection.removeAttribute('data-question'); // data属性をクリア
     } finally {
@@ -225,7 +281,7 @@ document.getElementById('sendButton').addEventListener('click', async function()
       sendButton.textContent = '送信';
     }
   } else {
-    alert('メッセージを入力してください');
+    alert('メッセージまたは画像を入力してください');
   }
 });
 
@@ -234,6 +290,9 @@ document.getElementById('cancelButton').addEventListener('click', function() {
   // フォームをクリアして非表示
   const replySection = document.getElementById('replySection');
   document.getElementById('replyInput').value = '';
+  selectedImageData = null;
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('imageInput').value = '';
   replySection.style.display = 'none';
   replySection.removeAttribute('data-question'); // data属性をクリア
 });

@@ -86,13 +86,20 @@ mainButton.addEventListener("click", function() {
     specialMessageElement.style.display = "block";
 
     // LINE送信フォームを表示
-    document.getElementById('replySection').style.display = "block";
+    const replySection = document.getElementById('replySection');
+    replySection.style.display = "block";
 
     // 現在のメッセージを送信フォームのdata属性に保存（質問内容を記録）
-    document.getElementById('replySection').setAttribute('data-question', currentMessage);
+    replySection.setAttribute('data-question', currentMessage);
 
     // 質問テキストを表示エリアに表示
     document.getElementById('questionText').innerHTML = currentMessage;
+
+    // 画面が動かないように、現在のスクロール位置を保持
+    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    setTimeout(() => {
+      window.scrollTo(0, currentScrollTop);
+    }, 0);
 
     // ボタンを一時的に無効化
     mainButton.disabled = true;
@@ -196,6 +203,38 @@ async function sendToLine(message, imageData = null) {
   }
 }
 
+// 画像選択機能
+let selectedImageData = null; // 選択された画像のBase64データ
+
+// 画像選択ボタンのクリックイベント
+document.querySelector('.image-label').addEventListener('click', function() {
+  document.getElementById('imageInput').click();
+});
+
+// 画像選択時の処理
+document.getElementById('imageInput').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      selectedImageData = event.target.result; // Base64データを保存
+      // プレビューを表示
+      const preview = document.getElementById('imagePreview');
+      const previewImage = document.getElementById('previewImage');
+      previewImage.src = selectedImageData;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// 画像削除ボタン
+document.getElementById('removeImage').addEventListener('click', function() {
+  selectedImageData = null;
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('imageInput').value = '';
+});
+
 // 送信ボタンのイベントリスナー（連続タップ防止付き）
 let isSending = false; // 送信中フラグ
 
@@ -211,7 +250,8 @@ document.getElementById('sendButton').addEventListener('click', async function()
   // 質問内容を取得（data属性から）
   const questionText = replySection.getAttribute('data-question') || message.textContent;
 
-  if (replyText.trim()) {
+  // テキストまたは画像のどちらかがあれば送信可能
+  if (replyText.trim() || selectedImageData) {
     try {
       // 送信中フラグを立てる
       isSending = true;
@@ -219,12 +259,17 @@ document.getElementById('sendButton').addEventListener('click', async function()
       sendButton.textContent = '送信中...';
 
       // 質問と返信を両方含めたメッセージを作成
-      const fullMessage = `【My Question】\n${questionText.replace(/<br>/g, '\n')}\n\n【Your Answer】\n${replyText}`;
+      const fullMessage = replyText.trim() 
+        ? `【My Question】\n${questionText.replace(/<br>/g, '\n')}\n\n【Your Answer】\n${replyText}`
+        : `【My Question】\n${questionText.replace(/<br>/g, '\n')}\n\n【Your Answer】\n(画像のみ)`;
 
-      await sendToLine(fullMessage);
+      await sendToLine(fullMessage, selectedImageData);
 
       // 送信後、フォームをクリアして非表示
       replyInput.value = '';
+      selectedImageData = null;
+      document.getElementById('imagePreview').style.display = 'none';
+      document.getElementById('imageInput').value = '';
       document.getElementById('questionText').innerHTML = ''; // 質問テキストもクリア
       replySection.style.display = 'none';
       replySection.removeAttribute('data-question'); // data属性をクリア
@@ -235,7 +280,7 @@ document.getElementById('sendButton').addEventListener('click', async function()
       sendButton.textContent = '送信';
     }
   } else {
-    alert('メッセージを入力してください');
+    alert('メッセージまたは画像を入力してください');
   }
 });
 
@@ -244,6 +289,9 @@ document.getElementById('cancelButton').addEventListener('click', function() {
   // フォームをクリアして非表示
   const replySection = document.getElementById('replySection');
   document.getElementById('replyInput').value = '';
+  selectedImageData = null;
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('imageInput').value = '';
   document.getElementById('questionText').innerHTML = ''; // 質問テキストもクリア
   replySection.style.display = 'none';
   replySection.removeAttribute('data-question'); // data属性をクリア
