@@ -154,21 +154,10 @@ async function sendToLine(message, imageData = null) {
     console.log('isLoggedIn:', liff.isLoggedIn());
     console.log('userLineId:', userLineId);
 
-    // 権限チェック
-    const permission = await liff.permission.query('chat_message.write');
-    console.log('chat_message.write permission:', permission.state);
-
-    if (permission.state !== 'granted') {
-      // 権限がない場合、権限を要求
-      console.log('権限を要求します...');
-      await liff.permission.requestAll();
-      
-      // 再度チェック
-      const newPermission = await liff.permission.query('chat_message.write');
-      if (newPermission.state !== 'granted') {
-        alert('メッセージ送信の権限が許可されていません。\nLINEの設定から権限を許可してください。');
-        return;
-      }
+    // LINEアプリ内かチェック
+    if (!liff.isInClient()) {
+      alert('LINEアプリ内で開いてください。\n外部ブラウザでは送信できません。');
+      return;
     }
     
     const messages = [];
