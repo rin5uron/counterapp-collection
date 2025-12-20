@@ -205,6 +205,7 @@
     /* 画像選択セクション */
     .image-section {
       margin-top: 12px;
+      margin-bottom: 8px;
     }
 
     .image-label {
@@ -230,6 +231,7 @@
     .image-preview {
       position: relative;
       margin-top: 12px;
+      margin-bottom: 8px;
       border-radius: 8px;
       overflow: hidden;
     }
@@ -257,6 +259,7 @@
       align-items: center;
       justify-content: center;
       transition: all 0.2s ease;
+      z-index: 10;
     }
 
     .remove-image-btn:hover {
@@ -266,7 +269,7 @@
     /* 送信ボタン */
     .send-button {
       width: 100%;
-      margin-top: 12px;
+      margin-top: 16px;
       padding: 12px;
       background: #D46A6A;
       color: white;
@@ -276,6 +279,8 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
+      position: relative;
+      z-index: 5;
     }
 
 .send-button:hover {

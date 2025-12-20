@@ -88,9 +88,18 @@ mainButton.addEventListener("click", function() {
 
     // 画面が動かないように、現在のスクロール位置を保持
     const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    setTimeout(() => {
+    
+    // スクロール位置を固定（複数回試行）
+    const fixScroll = () => {
       window.scrollTo(0, currentScrollTop);
-    }, 0);
+      document.documentElement.scrollTop = currentScrollTop;
+      document.body.scrollTop = currentScrollTop;
+    };
+    
+    fixScroll();
+    setTimeout(fixScroll, 0);
+    setTimeout(fixScroll, 50);
+    setTimeout(fixScroll, 100);
 
     // ボタンを一時的に無効化
     mainButton.disabled = true;
@@ -153,12 +162,6 @@ async function sendToLine(message, imageData = null) {
     console.log('isInClient:', liff.isInClient());
     console.log('isLoggedIn:', liff.isLoggedIn());
     console.log('userLineId:', userLineId);
-
-    // LINEアプリ内かチェック
-    if (!liff.isInClient()) {
-      alert('LINEアプリ内で開いてください。\n外部ブラウザでは送信できません。');
-      return;
-    }
     
     const messages = [];
 
@@ -198,15 +201,19 @@ async function sendToLine(message, imageData = null) {
     console.error('=== 送信エラー ===');
     console.error('エラー詳細:', error);
     console.error('エラーメッセージ:', error.message);
+    console.error('エラーコード:', error.code);
     console.error('エラースタック:', error.stack);
     
     // エラーメッセージに応じて適切なメッセージを表示
-    if (error.message && error.message.includes('not in LINE')) {
+    const errorMsg = error.message || '';
+    if (errorMsg.includes('not in LINE') || errorMsg.includes('not in client')) {
       alert('LINEアプリ内で開いてください。\n外部ブラウザでは送信できません。');
-    } else if (error.message && error.message.includes('invalid')) {
+    } else if (errorMsg.includes('permission') || errorMsg.includes('grant')) {
+      alert('メッセージ送信の権限が許可されていません。\nLINEの設定から権限を許可してください。');
+    } else if (errorMsg.includes('invalid')) {
       alert('送信に失敗しました。\nページを再読み込みして再度お試しください。');
     } else {
-      alert('送信エラー: ' + (error.message || '不明なエラーが発生しました'));
+      alert('送信エラー: ' + (errorMsg || '不明なエラーが発生しました'));
     }
   }
 }
