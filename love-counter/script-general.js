@@ -82,6 +82,13 @@ mainButton.addEventListener("click", function() {
 
   // 22で割り切れるときに特別メッセージとLINE送信フォームを表示
   if (count % 22 === 0 && count !== 0) {
+    // まず現在のスクロール位置を記録
+    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    
+    // スクロールを一時的に無効化
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    
     specialMessageElement.innerHTML = "✨このメッセージの答えを教えてね！✨";
     specialMessageElement.style.display = "block";
 
@@ -95,20 +102,26 @@ mainButton.addEventListener("click", function() {
     // 質問テキストを表示エリアに表示
     document.getElementById('questionText').innerHTML = currentMessage;
 
-    // 画面が動かないように、現在のスクロール位置を保持
-    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
-    // スクロール位置を固定（複数回試行）
-    const fixScroll = () => {
-      window.scrollTo(0, currentScrollTop);
-      document.documentElement.scrollTop = currentScrollTop;
-      document.body.scrollTop = currentScrollTop;
-    };
-    
-    fixScroll();
-    setTimeout(fixScroll, 0);
-    setTimeout(fixScroll, 50);
-    setTimeout(fixScroll, 100);
+    // レイアウトが安定するまで待ってからスクロール位置を復元
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // スクロール位置を固定
+        window.scrollTo(0, currentScrollTop);
+        document.documentElement.scrollTop = currentScrollTop;
+        document.body.scrollTop = currentScrollTop;
+        
+        // スクロールを再有効化
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        
+        // 念のため再度位置を固定
+        setTimeout(() => {
+          window.scrollTo(0, currentScrollTop);
+          document.documentElement.scrollTop = currentScrollTop;
+          document.body.scrollTop = currentScrollTop;
+        }, 0);
+      });
+    });
 
     // ボタンを一時的に無効化
     mainButton.disabled = true;
