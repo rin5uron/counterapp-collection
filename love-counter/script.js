@@ -200,7 +200,7 @@ async function sendToLine(message, imageData = null) {
     if (errorMsg.includes('not in LINE') || errorMsg.includes('not in client')) {
       alert('LINEアプリ内で開いてください。\n外部ブラウザでは送信できません。');
     } else if (errorMsg.includes('permission') || errorMsg.includes('grant')) {
-      alert('メッセージ送信の権限が許可されていません。\n\n設定方法：\n1. LINEアプリを開く\n2. 設定 → アカウント → 連携アプリ\n3. 「Love Counter」を探して連携解除\n4. このアプリを再度開いて「許可」をタップ');
+      alert('メッセージ送信の権限が許可されていません。\n\nこのアプリを再度開いて「許可」をタップしてください。');
     } else {
       alert('送信エラー: ' + (errorMsg || '不明なエラーが発生しました'));
     }
@@ -211,10 +211,13 @@ async function sendToLine(message, imageData = null) {
 let isSending = false; // 送信中フラグ
 
 document.getElementById('sendButton').addEventListener('click', async function() {
-  // 送信中は何もしない
-  if (isSending) return;
-
   const sendButton = document.getElementById('sendButton');
+  
+  // 送信中は何もしない（フラグとdisabledの両方をチェック）
+  if (isSending || sendButton.disabled) {
+    return;
+  }
+
   const replyInput = document.getElementById('replyInput');
   const replyText = replyInput.value;
   const replySection = document.getElementById('replySection');
@@ -224,10 +227,11 @@ document.getElementById('sendButton').addEventListener('click', async function()
 
   if (replyText.trim()) {
     try {
-      // 送信中フラグを立てる
+      // 送信中フラグを立てる（最初に設定）
       isSending = true;
       sendButton.disabled = true;
       sendButton.textContent = '送信中...';
+      sendButton.style.pointerEvents = 'none'; // クリックを完全に無効化
 
       // 質問と返信を両方含めたメッセージを作成
       const fullMessage = `【my question】\n${questionText.replace(/<br>/g, '\n')}\n\n【your answer】\n${replyText}`;
@@ -243,6 +247,7 @@ document.getElementById('sendButton').addEventListener('click', async function()
       isSending = false;
       sendButton.disabled = false;
       sendButton.textContent = '送信';
+      sendButton.style.pointerEvents = ''; // クリックを再有効化
     }
   } else {
     alert('メッセージを入力してください');
