@@ -208,46 +208,15 @@ async function sendToLine(message, imageData = null) {
       });
     }
 
-    // 1. 公式LINEアカウントに送信（liff.sendMessages()）
+    // liff.sendMessages()で送信
+    // これは「ユーザーと公式LINEアカウントのチャット」に送信される
+    // ユーザーは自分のLINEアカウントでメッセージを確認でき、運営者は公式LINEアカウントの管理画面で確認できる
     if (messages.length > 0) {
       console.log('送信するメッセージ:', messages);
       await liff.sendMessages(messages);
       console.log('送信成功！');
+      alert('送信しました！\nあなたと公式LINEアカウントのチャットに送信されました。');
     }
-
-    // 2. ユーザー自身にも送信（サーバーAPI経由）
-    try {
-      const profile = await liff.getProfile();
-      const userId = profile.userId;
-      
-      // サーバーAPIを呼び出してユーザー自身にも送信
-      const response = await fetch('/api/send-message', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: userId,
-          message: message || '',
-          imageUrl: imageUrl
-        })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Failed to send message to user:', errorData);
-        // ユーザーへの送信が失敗しても公式LINEへの送信は成功しているので、警告のみ
-        alert('公式LINEアカウントには送信しましたが、あなた自身への送信に失敗しました。');
-        return;
-      }
-    } catch (userSendError) {
-      console.error('Error sending message to user:', userSendError);
-      // ユーザーへの送信が失敗しても公式LINEへの送信は成功しているので、警告のみ
-      alert('公式LINEアカウントには送信しましたが、あなた自身への送信に失敗しました。');
-      return;
-    }
-
-    alert('送信しました！\n公式LINEアカウントとあなた自身の両方に送信されました。');
 
   } catch (error) {
     console.error('=== 送信エラー ===');
