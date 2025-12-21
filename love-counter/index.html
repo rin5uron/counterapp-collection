@@ -216,6 +216,11 @@
       margin-top: 12px;
       margin-bottom: 8px;
     }
+    
+    .image-section .send-button {
+      margin-top: 12px;
+      margin-bottom: 0;
+    }
 
     .image-label {
       display: inline-block;
@@ -278,7 +283,6 @@
     /* 送信ボタン */
     .send-button {
       width: 100%;
-      margin-top: 16px;
       padding: 12px;
       background: #D46A6A;
       color: white;
@@ -466,14 +470,14 @@
             <img id="previewImage" src="" alt="プレビュー" />
             <button type="button" id="removeImage" class="remove-image-btn">×</button>
           </div>
+          
+          <!-- 送信ボタン（画像選択の下に配置） -->
+          <button id="sendButton" class="send-button">
+            LINEに送信
+          </button>
         </div>
 
-        <!-- 送信ボタン -->
-        <button id="sendButton" class="send-button">
-          LINEに送信
-        </button>
-
-        <!-- キャンセルボタン（オプション） -->
+        <!-- キャンセルボタン -->
         <button id="cancelButton" class="cancel-button">
           キャンセル
         </button>

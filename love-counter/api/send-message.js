@@ -84,25 +84,18 @@ module.exports = async (req, res) => {
   // ステップ4: メイン処理（メッセージ送信）
   // ----------------------------------------
   try {
-    // リクエストボディからメッセージとユーザーIDを取得
-    // フロントエンド（LIFF）から { userId: "Uxxxxx", message: "こんにちは" } という形式で送られてくる
-    const { userId, message } = req.body;
-
-    // ---------------------------------
-    // メッセージとユーザーIDの検証
-    // ---------------------------------
-    // 1. messageが存在しない → NG
-    // 2. messageが文字列じゃない → NG
-    // 3. messageが空文字（スペースのみも含む） → NG
-    if (!message || typeof message !== 'string' || message.trim() === '') {
-      // 400 Bad Request = クライアント側のリクエストが不正
-      return res.status(400).json({ error: 'Invalid message' });
-    }
+    // リクエストボディからメッセージ、ユーザーID、画像URLを取得
+    // フロントエンド（LIFF）から { userId: "Uxxxxx", message: "こんにちは", imageUrl: "https://..." } という形式で送られてくる
+    const { userId, message, imageUrl } = req.body;
 
     // userIdが存在しない → NG
-    // LIFF実装後は、フロントエンドから送られてくるuserIdを使用
     if (!userId || typeof userId !== 'string') {
       return res.status(400).json({ error: 'userId is required' });
+    }
+
+    // メッセージまたは画像のどちらかが必要
+    if ((!message || typeof message !== 'string' || message.trim() === '') && !imageUrl) {
+      return res.status(400).json({ error: 'Message or image is required' });
     }
 
     // ---------------------------------
@@ -121,14 +114,30 @@ module.exports = async (req, res) => {
     // ---------------------------------
     // pushMessage = ユーザーに対してメッセージを「プッシュ配信」
     // （ユーザーからのメッセージに返信するreplyMessageとは違う）
-    // LIFF実装後: フロントエンドから受け取ったuserIdを使用
-    await client.pushMessage(userId, {
-      type: 'text',        // メッセージのタイプ（テキスト）
-      text: message        // 送信するテキスト内容
-    });
+    const messages = [];
+
+    // テキストメッセージ
+    if (message && message.trim() !== '') {
+      messages.push({
+        type: 'text',
+        text: message
+      });
+    }
+
+    // 画像
+    if (imageUrl) {
+      messages.push({
+        type: 'image',
+        originalContentUrl: imageUrl,
+        previewImageUrl: imageUrl
+      });
+    }
+
+    // メッセージを送信
+    await client.pushMessage(userId, messages);
 
     // 成功ログを出力（Vercelのログで確認できる）
-    console.log('Message sent successfully to userId:', userId, 'message:', message);
+    console.log('Message sent successfully to userId:', userId);
 
     // フロントエンドに成功レスポンスを返す
     // 200 OK = 正常に処理完了

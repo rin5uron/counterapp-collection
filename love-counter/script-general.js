@@ -89,7 +89,7 @@ mainButton.addEventListener("click", function() {
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     
-    specialMessageElement.innerHTML = "✨このメッセージの答えを教えてね！✨";
+    specialMessageElement.innerHTML = "✨答えを教えてね！✨";
     specialMessageElement.style.display = "block";
 
     // LINE送信フォームを表示
@@ -182,6 +182,19 @@ async function sendToLine(message, imageData = null) {
     console.log('isInClient:', liff.isInClient());
     console.log('isLoggedIn:', liff.isLoggedIn());
     
+    let imageUrl = null;
+    
+    // 画像を先にアップロード（あれば）
+    if (imageData) {
+      try {
+        imageUrl = await uploadToImgur(imageData);
+      } catch (uploadError) {
+        console.error('Error uploading image:', uploadError);
+        alert('画像のアップロードに失敗しました: ' + uploadError.message);
+        return;
+      }
+    }
+
     const messages = [];
 
     // テキストメッセージ
@@ -192,27 +205,53 @@ async function sendToLine(message, imageData = null) {
       });
     }
 
-    // 画像（imgurにアップロード）
-    if (imageData) {
-      try {
-        const imageUrl = await uploadToImgur(imageData);
-        messages.push({
-          type: 'image',
-          originalContentUrl: imageUrl,
-          previewImageUrl: imageUrl
-        });
-      } catch (uploadError) {
-        console.error('Error uploading image:', uploadError);
-        alert('画像のアップロードに失敗しました: ' + uploadError.message);
-        return;
-      }
+    // 画像
+    if (imageUrl) {
+      messages.push({
+        type: 'image',
+        originalContentUrl: imageUrl,
+        previewImageUrl: imageUrl
+      });
     }
 
-    // liff.sendMessages()で送信
+    // 1. 公式LINEアカウントに送信（liff.sendMessages()）
     if (messages.length > 0) {
       await liff.sendMessages(messages);
-      alert('公式LINEアカウントに送信しました！');
     }
+
+    // 2. ユーザー自身にも送信（サーバーAPI経由）
+    try {
+      const profile = await liff.getProfile();
+      const userId = profile.userId;
+      
+      // サーバーAPIを呼び出してユーザー自身にも送信
+      const response = await fetch('/api/send-message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          message: message || '',
+          imageUrl: imageUrl
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Failed to send message to user:', errorData);
+        // ユーザーへの送信が失敗しても公式LINEへの送信は成功しているので、警告のみ
+        alert('公式LINEアカウントには送信しましたが、あなた自身への送信に失敗しました。');
+        return;
+      }
+    } catch (userSendError) {
+      console.error('Error sending message to user:', userSendError);
+      // ユーザーへの送信が失敗しても公式LINEへの送信は成功しているので、警告のみ
+      alert('公式LINEアカウントには送信しましたが、あなた自身への送信に失敗しました。');
+      return;
+    }
+
+    alert('送信しました！\n公式LINEアカウントとあなた自身の両方に送信されました。');
 
   } catch (error) {
     console.error('Error:', error);
@@ -224,7 +263,7 @@ async function sendToLine(message, imageData = null) {
     if (errorMsg.includes('not in LINE') || errorMsg.includes('not in client')) {
       alert('LINEアプリ内で開いてください。\n外部ブラウザでは送信できません。');
     } else if (errorMsg.includes('permission') || errorMsg.includes('grant')) {
-      alert('メッセージ送信の権限が許可されていません。\nLINEの設定から権限を許可してください。');
+      alert('メッセージ送信の権限が許可されていません。\n\n設定方法：\n1. LINEアプリを開く\n2. 設定 → アカウント → 連携アプリ\n3. 「Love Counter」を探して連携解除\n4. このアプリを再度開いて「許可」をタップ');
     } else {
       alert('送信エラー: ' + (errorMsg || '不明なエラーが発生しました'));
     }
