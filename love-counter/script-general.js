@@ -89,7 +89,7 @@ mainButton.addEventListener("click", function() {
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     
-    specialMessageElement.innerHTML = "✨答えを教えてね！✨";
+    specialMessageElement.innerHTML = "答えを教えてね！";
     specialMessageElement.style.display = "block";
 
     // LINE送信フォームを表示
