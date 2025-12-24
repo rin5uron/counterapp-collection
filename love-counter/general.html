@@ -175,24 +175,24 @@
     }
 
     .reply-section {
-  margin-top: 32px;
-  padding: 20px;
+  margin-top: 16px;
+  padding: 12px;
   background: #FFF5F0;
-  border-radius: 16px;
+  border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 /* 質問表示エリア */
 .question-display {
   background: white;
-  border-radius: 12px;
-  padding: 12px 16px;
-  margin-bottom: 16px;
-  border-left: 4px solid #A8D46F;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border-left: 3px solid #A8D46F;
 }
 
 .question-label {
-  font-size: 11px;
+  font-size: 10px;
   color: #95C15E;
   font-weight: 700;
   text-transform: uppercase;
@@ -200,22 +200,23 @@
 }
 
 .question-display p {
-  margin: 8px 0 0;
-  font-size: 15px;
+  margin: 4px 0 0;
+  font-size: 13px;
   color: var(--text-primary);
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 /* テキストエリア */
 .reply-section textarea {
   width: 100%;
-  padding: 16px;
+  padding: 10px;
   border: 2px solid #E8D5C4;
-  border-radius: 12px;
-  font-size: 16px;
+  border-radius: 8px;
+  font-size: 14px;
   font-family: inherit;
-  resize: vertical;
-  min-height: 100px;
+  resize: none;
+  min-height: 50px;
+  box-sizing: border-box;
 }
 
 .reply-section textarea:focus {
@@ -226,13 +227,13 @@
 /* 送信ボタン */
 .send-button {
   width: 100%;
-  margin-top: 16px;
-  padding: 16px;
+  margin-top: 8px;
+  padding: 12px;
   background: #A8D46F;
   color: white;
   border: none;
-  border-radius: 12px;
-  font-size: 16px;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -252,34 +253,34 @@
 /* キャンセルボタン */
 .cancel-button {
   width: 100%;
-  margin-top: 8px;
-  padding: 12px;
+  margin-top: 6px;
+  padding: 10px;
   background: transparent;
   color: #666;
   border: 2px solid #E8D5C4;
-  border-radius: 12px;
-  font-size: 14px;
+  border-radius: 8px;
+  font-size: 13px;
   cursor: pointer;
 }
 
     /* 画像選択セクション */
     .image-section {
-      margin-top: 12px;
-      margin-bottom: 8px;
+      margin-top: 8px;
+      margin-bottom: 4px;
     }
     
     .image-section .send-button {
-      margin-top: 12px;
+      margin-top: 8px;
       margin-bottom: 0;
     }
 
     .image-label {
       display: inline-block;
-      padding: 8px 16px;
+      padding: 6px 12px;
       background: #F5EFE7;
-      border: 2px dashed #E8D5C4;
-      border-radius: 8px;
-      font-size: 14px;
+      border: 1px dashed #E8D5C4;
+      border-radius: 6px;
+      font-size: 12px;
       color: var(--text-primary);
       cursor: pointer;
       transition: all 0.2s ease;
@@ -295,15 +296,15 @@
 
     .image-preview {
       position: relative;
-      margin-top: 12px;
-      margin-bottom: 8px;
+      margin-top: 8px;
+      margin-bottom: 4px;
       border-radius: 8px;
       overflow: hidden;
     }
 
     .image-preview img {
       width: 100%;
-      max-height: 200px;
+      max-height: 120px;
       object-fit: contain;
       display: block;
     }
