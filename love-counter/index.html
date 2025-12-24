@@ -180,24 +180,23 @@
     }
 
     .reply-section {
-      margin-top: 24px;
-      padding: 16px;
+      margin-top: 12px;
+      padding: 12px;
       background: #FFF5F0;
-      border-radius: 16px;
+      border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
     /* テキストエリア */
     .reply-section textarea {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       border: 2px solid #E8D5C4;
-      border-radius: 12px;
-      font-size: 15px;
+      border-radius: 8px;
+      font-size: 14px;
       font-family: inherit;
-      resize: vertical;
-      min-height: 60px;
-      max-height: 80px;
+      resize: none;
+      min-height: 40px;
       box-sizing: border-box;
     }
 
@@ -208,22 +207,20 @@
 
     /* 画像選択セクション */
     .image-section {
-      margin-top: 12px;
-      margin-bottom: 8px;
+      margin-top: 8px;
     }
     
     .image-section .send-button {
-      margin-top: 12px;
-      margin-bottom: 0;
+      margin-top: 8px;
     }
 
     .image-label {
       display: inline-block;
-      padding: 8px 16px;
+      padding: 6px 12px;
       background: #F5EFE7;
-      border: 2px dashed #E8D5C4;
-      border-radius: 8px;
-      font-size: 14px;
+      border: 1px dashed #E8D5C4;
+      border-radius: 6px;
+      font-size: 12px;
       color: var(--text-primary);
       cursor: pointer;
       transition: all 0.2s ease;
@@ -239,15 +236,14 @@
 
     .image-preview {
       position: relative;
-      margin-top: 12px;
-      margin-bottom: 8px;
-      border-radius: 8px;
+      margin-top: 8px;
+      border-radius: 6px;
       overflow: hidden;
     }
 
     .image-preview img {
       width: 100%;
-      max-height: 200px;
+      max-height: 100px;
       object-fit: contain;
       display: block;
     }
@@ -278,40 +274,36 @@
     /* 送信ボタン */
     .send-button {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       background: #D46A6A;
       color: white;
       border: none;
-      border-radius: 12px;
-      font-size: 15px;
+      border-radius: 8px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      position: relative;
-      z-index: 5;
     }
 
-.send-button:hover {
-  background: #C15D5D;
-  transform: translateY(-2px);
-}
+    .send-button:hover {
+      background: #C15D5D;
+    }
 
     .send-button:disabled {
       background: #ccc;
       cursor: not-allowed;
-      transform: none;
     }
 
     /* キャンセルボタン */
     .cancel-button {
       width: 100%;
-      margin-top: 8px;
-      padding: 10px;
+      margin-top: 6px;
+      padding: 8px;
       background: transparent;
       color: #666;
-      border: 2px solid #E8D5C4;
-      border-radius: 12px;
-      font-size: 13px;
+      border: 1px solid #E8D5C4;
+      border-radius: 8px;
+      font-size: 12px;
       cursor: pointer;
     }
 
