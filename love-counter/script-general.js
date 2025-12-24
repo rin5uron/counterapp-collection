@@ -364,7 +364,7 @@ async function initializeLiff() {
     // LINEアプリとの連携を開始（開発者用ログ）
     console.log('アプリ読み込み開始...');
 
-    await liff.init({ liffId: '2008641870-nLbJegy4' });
+    await liff.init({ liffId: '2008767593-QTUyOosj' });
 
     console.log('アプリ読み込み完了。ログイン状態:', liff.isLoggedIn());
 
