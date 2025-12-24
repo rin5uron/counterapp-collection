@@ -82,7 +82,7 @@ mainButton.addEventListener("click", function() {
 
   // 22で割り切れるときに特別メッセージとLINE送信フォームを表示
   if (count % 22 === 0 && count !== 0) {
-    specialMessageElement.innerHTML = "✨このメッセージの答えを教えてね！✨";
+    specialMessageElement.innerHTML = "✨答えを送信してね！✨";
     specialMessageElement.style.display = "block";
 
     // LINE送信フォームを表示

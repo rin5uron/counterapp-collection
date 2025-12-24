@@ -83,7 +83,7 @@ mainButton.addEventListener("click", function() {
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     
-    specialMessageElement.innerHTML = "✨このメッセージの答えを教えてね！✨";
+    specialMessageElement.innerHTML = "✨答えを送信してね！✨";
     specialMessageElement.style.display = "block";
 
     // LINE送信フォームを表示
@@ -227,6 +227,15 @@ async function sendToLine(message, imageData = null) {
     
     // エラーメッセージに応じて適切なメッセージを表示
     const errorMsg = error.message || '';
+    const errorCode = error.code || '';
+    
+    // 詳細エラー表示（デバッグ用）
+    alert('【デバッグ情報】\n' +
+      'エラー: ' + errorMsg + '\n' +
+      'コード: ' + errorCode + '\n' +
+      'isInClient: ' + liff.isInClient() + '\n' +
+      'isLoggedIn: ' + liff.isLoggedIn());
+    
     if (errorMsg.includes('not in LINE') || errorMsg.includes('not in client')) {
       alert('LINEアプリ内で開いてください。\n外部ブラウザでは送信できません。');
     } else if (errorMsg.includes('permission') || errorMsg.includes('grant')) {
