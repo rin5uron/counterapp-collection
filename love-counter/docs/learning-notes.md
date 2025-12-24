@@ -6,11 +6,81 @@ This file contains what I learned through the project, organized by date.
 
 ## 📚 目次
 
+- [2025/12/25 - LIFF URLとVercel URL直接アクセスの違い、権限エラー解決](#20251225---liff-urlとvercel-urlの違い)
 - [2025/12/17 - フェーズ4改善：URL構造変更、Webhook自動応答削除、100dvh、ボタン位置調整](#20251217---フェーズ4改善)
 - [2025/12/13 - pushMessage vs liff.sendMessages(), Webhook, LIFFウィンドウ, 送信フロー, Bot送信 vs ユーザー送信, 管理画面表示](#20251213---pushmessageとliffsendmessagesの違い初心者向け)
 - [2025/12/6 - LINEチャネル, プロバイダー, Messaging API, 複数ボット管理, 機能分岐設計, **Vercelビルドエラー解決**](#20251206---lineチャネルとボットの関係)
 - [2025/12/5 - SVG, ベクター画像, path, circle, text, viewBox, xmlns, 名前空間, グラデーション, 描画順序, Q (Quadratic curve), 制御点](#20251205---svgとcssの違い)
 - [2025/12/4 - innerHTML, disabled, Math.random(), Math.floor(), setTimeout(), 配列, 関数の引数, path順序, Z (Close path), SVG重なり順, **左右対称ロジック**, **曲線の滑らかさ調整**](#20251204---javascript基礎)
+
+---
+
+## 2025/12/25 - LIFF URLとVercel URLの違い
+
+### 概要
+
+LIFF URLを使わずにVercel URLを直接開くと、LIFFが正しく認識されず「メッセージ送信の権限が許可されていません」エラーが発生する問題を解決しました。
+
+---
+
+### 発生した問題
+
+**症状:**
+- LINEアプリ内でVercel URL（`https://love-counter-theta.vercel.app/special.html`）を直接開く
+- 「メッセージ送信の権限が許可されていません」エラーが表示される
+- `isInClient: false` と表示される（LINEアプリ内なのに）
+
+**不思議だった点:**
+- LINEの設定で「リンクをデフォルトのブラウザで開く」はOFFになっている
+- フェーズ3では同じ方法で動いていたのに、急に動かなくなった
+
+---
+
+### 原因
+
+**Vercel URLとLIFF URLの違い:**
+
+| 開き方 | URL形式 | 結果 |
+|--------|---------|------|
+| ❌ Vercel URL直接 | `https://xxx.vercel.app/special.html` | LIFFとして認識されない |
+| ✅ LIFF URL | `https://liff.line.me/LIFF_ID` | LIFFとして正しく認識される |
+
+**なぜVercel URL直接だとダメなのか:**
+1. LINEアプリ内ブラウザで開いても、LIFF URLを経由しないとLIFFの認証フローが正しく動作しない
+2. `liff.sendMessages()` は LIFF として認証された状態でないと権限エラーになる
+3. 新しいLIFF ID（`2008767593-QTUyOosj`）は、まだ権限の同意が取れていなかった
+
+**フェーズ3で動いていた理由:**
+- 元々のLIFF ID（`2008641870-nLbJegy4`）は既に権限同意済みだった
+- 新しいLIFF IDを作った時、権限の再同意が必要だった
+
+---
+
+### 解決方法
+
+**LIFF URLで開く:**
+
+```
+❌ 間違い: https://love-counter-theta.vercel.app/special.html
+✅ 正解:  https://liff.line.me/2008767593-QTUyOosj
+```
+
+**LIFF URLの構造:**
+```
+https://liff.line.me/[あなたのLIFF_ID]
+```
+
+**このプロジェクトのLIFF URL:**
+- 赤りんご（index.html）: `https://liff.line.me/2008641870-nLbJegy4`
+- 緑りんご（special.html）: `https://liff.line.me/2008767593-QTUyOosj`
+
+---
+
+### 学んだこと
+
+1. **LIFF URL経由で開く**: 直接Vercel URLを開かず、必ず `https://liff.line.me/LIFF_ID` 形式で開く
+2. **新しいLIFF IDは権限同意が必要**: LIFF IDを新しく作ったら、LIFF URLから開いて権限を許可する必要がある
+3. **デバッグ情報を出力する**: `isInClient`、`isLoggedIn` などの値をログに出力しておくと問題特定が早い
 
 ---
 
