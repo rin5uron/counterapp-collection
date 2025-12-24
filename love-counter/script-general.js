@@ -178,6 +178,12 @@ async function uploadToImgur(imageData) {
 // LINEに送信する関数（liff.sendMessages()方式）
 async function sendToLine(message, imageData = null) {
   try {
+    // LIFFが初期化されているかチェック
+    if (typeof liff === 'undefined' || !liff.isInClient()) {
+      alert('LINEアプリ内で開いてください。\n\nこのリンクをLINEのトークで送信し、そこからタップして開いてください。');
+      return false; // 失敗を返す
+    }
+
     // デバッグ: 環境情報をログに出力
     console.log('isInClient:', liff.isInClient());
     console.log('isLoggedIn:', liff.isLoggedIn());
@@ -220,7 +226,9 @@ async function sendToLine(message, imageData = null) {
     if (messages.length > 0) {
       await liff.sendMessages(messages);
       alert('送信しました！\nあなたと公式LINEアカウントのチャットに送信されました。');
+      return true; // 成功
     }
+    return false;
 
   } catch (error) {
     console.error('Error:', error);
@@ -236,6 +244,7 @@ async function sendToLine(message, imageData = null) {
     } else {
       alert('送信エラー: ' + (errorMsg || '不明なエラーが発生しました'));
     }
+    return false; // 失敗
   }
 }
 
@@ -291,30 +300,35 @@ document.getElementById('sendButton').addEventListener('click', async function()
 
   // テキストまたは画像のどちらかがあれば送信可能
   if (replyText.trim() || selectedImageData) {
-    try {
-      // 送信中フラグを立てる（最初に設定）
-      isSending = true;
-      sendButton.disabled = true;
-      sendButton.textContent = '送信中...';
-      sendButton.style.pointerEvents = 'none'; // クリックを完全に無効化
+    // 送信中フラグを立てる（最初に設定）
+    isSending = true;
+    sendButton.disabled = true;
+    sendButton.textContent = '送信中...';
+    sendButton.style.pointerEvents = 'none'; // クリックを完全に無効化
 
+    try {
       // 質問と返信を両方含めたメッセージを作成
       const fullMessage = replyText.trim() 
         ? `【My Question】\n${questionText.replace(/<br>/g, '\n')}\n\n【Your Answer】\n${replyText}`
         : `【My Question】\n${questionText.replace(/<br>/g, '\n')}\n\n【Your Answer】\n(画像のみ)`;
 
-      await sendToLine(fullMessage, selectedImageData);
+      const success = await sendToLine(fullMessage, selectedImageData);
 
-      // 送信後、フォームをクリアして非表示
-      replyInput.value = '';
-      selectedImageData = null;
-      document.getElementById('imagePreview').style.display = 'none';
-      document.getElementById('imageInput').value = '';
-      document.getElementById('questionText').innerHTML = ''; // 質問テキストもクリア
-      replySection.style.display = 'none';
-      replySection.removeAttribute('data-question'); // data属性をクリア
+      // 送信成功時のみ、フォームをクリアして非表示
+      if (success) {
+        replyInput.value = '';
+        selectedImageData = null;
+        document.getElementById('imagePreview').style.display = 'none';
+        document.getElementById('imageInput').value = '';
+        document.getElementById('questionText').innerHTML = ''; // 質問テキストもクリア
+        replySection.style.display = 'none';
+        replySection.removeAttribute('data-question'); // data属性をクリア
+      }
+    } catch (error) {
+      console.error('送信処理エラー:', error);
+      alert('送信処理中にエラーが発生しました');
     } finally {
-      // 確実に再有効化
+      // 確実に再有効化（成功・失敗に関わらず）
       isSending = false;
       sendButton.disabled = false;
       sendButton.textContent = '送信';
