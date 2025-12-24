@@ -11,7 +11,7 @@
       --white: #FFFFFF;           /* カード背景 */
       --white-soft: #FFF5F0;      /* テキスト用の柔らかい白（Apple風） */
 
-      /* りんごの色（青リンゴ） */
+      /* りんごの色（緑りんご） */
       --apple-red: #A8D46F;       /* りんご本体（黄緑色） */
       --apple-red-hover: #95C15E; /* ホバー時（濃い黄緑） */
 
@@ -81,10 +81,10 @@
       background: none;
       cursor: pointer;
       padding: 0;
-      margin: 0 auto 24px auto;
+      margin: 0 auto 32px auto;
       transition: all 0.3s ease;
-      width: 150px;
-      height: 150px;
+      width: 180px;
+      height: 180px;
       display: block;
     }
 
@@ -127,6 +127,7 @@
     #message {
       min-height: 3.5em;
       font-size: 18px;
+      margin-top: 16px;
       margin-bottom: 20px;
       line-height: 1.6;
       color: var(--text-primary);
@@ -184,24 +185,26 @@
     }
 
     .reply-section {
-  margin-top: 32px;
-  padding: 24px;
-  background: #FFF5F0;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
+      margin-top: 24px;
+      padding: 16px;
+      background: #FFF5F0;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
 
-/* テキストエリア */
-.reply-section textarea {
-  width: 100%;
-  padding: 16px;
-  border: 2px solid #E8D5C4;
-  border-radius: 12px;
-  font-size: 16px;
-  font-family: inherit;
-  resize: vertical;
-  min-height: 100px;
-}
+    /* テキストエリア */
+    .reply-section textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #E8D5C4;
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 60px;
+      max-height: 80px;
+      box-sizing: border-box;
+    }
 
     .reply-section textarea:focus {
       outline: none;
@@ -280,12 +283,12 @@
     /* 送信ボタン */
     .send-button {
       width: 100%;
-      padding: 16px;
+      padding: 12px;
       background: #A8D46F;
       color: white;
       border: none;
       border-radius: 12px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -293,29 +296,29 @@
       z-index: 5;
     }
 
-.send-button:hover {
-  background: #95C15E;
-  transform: translateY(-2px);
-}
+    .send-button:hover {
+      background: #95C15E;
+      transform: translateY(-2px);
+    }
 
-.send-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-  transform: none;
-}
+    .send-button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
 
-/* キャンセルボタン */
-.cancel-button {
-  width: 100%;
-  margin-top: 8px;
-  padding: 12px;
-  background: transparent;
-  color: #666;
-  border: 2px solid #E8D5C4;
-  border-radius: 12px;
-  font-size: 14px;
-  cursor: pointer;
-}
+    /* キャンセルボタン */
+    .cancel-button {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px;
+      background: transparent;
+      color: #666;
+      border: 2px solid #E8D5C4;
+      border-radius: 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
 
     @keyframes sparkle {
       0%, 100% {
@@ -331,10 +334,10 @@
     /* スマホ対応 */
     @media (max-width: 480px) {
       body {
-        padding: 16px;
+        padding: 24px 16px;
         min-height: 100dvh;
-        justify-content: flex-start;
-        padding-top: 60px;
+        min-height: -webkit-fill-available;
+        padding-top: 32px;
       }
 
       .card {
@@ -350,8 +353,8 @@
       }
 
       #mainButton {
-        width: 140px;
-        height: 140px;
+        width: 160px;
+        height: 160px;
         -webkit-tap-highlight-color: transparent;
         touch-action: manipulation;
       }
@@ -367,6 +370,7 @@
       #message {
         font-size: 19px;
         min-height: 4em;
+        margin-top: 20px;
         margin-bottom: 24px;
       }
 
@@ -388,8 +392,8 @@
       }
 
       #mainButton {
-        width: 120px;
-        height: 120px;
+        width: 140px;
+        height: 140px;
       }
 
       #mainButton .button-text {
@@ -409,7 +413,7 @@
 </p>
     <button id="mainButton">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          
+
 
           <!-- リンゴの本体 -->
            <!-- 左右対称なりんご（x=50を中心軸） -->
@@ -432,11 +436,11 @@
         <!-- テキスト（SVG内） -->
         <text class="apple-text" x="50" y="61" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
         font-size="20" font-weight="bold" text-anchor="middle">YES</text>
-      
-      
+
+
       </svg>
     </button>
-    
+
     <p id="message"></p>
     <div class="counter">
       私のこと好き度：<span id="count">0</span> %
@@ -472,12 +476,12 @@
             送信
           </button>
         </div>
-      
+
         <!-- キャンセルボタン -->
         <button id="cancelButton" class="cancel-button">
           キャンセル
         </button>
-      
+
     </div>
   </div>
 
@@ -489,4 +493,3 @@
 
 </body>
 </html>
-
