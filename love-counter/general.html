@@ -262,6 +262,75 @@
   cursor: pointer;
 }
 
+    /* 画像選択セクション */
+    .image-section {
+      margin-top: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .image-section .send-button {
+      margin-top: 12px;
+      margin-bottom: 0;
+    }
+
+    .image-label {
+      display: inline-block;
+      padding: 8px 16px;
+      background: #F5EFE7;
+      border: 2px dashed #E8D5C4;
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .image-label:hover {
+      background: #E8D5C4;
+      border-color: #A8D46F;
+    }
+
+    .image-preview {
+      position: relative;
+      margin-top: 12px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .image-preview img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .remove-image-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .remove-image-btn:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
     @keyframes sparkle {
       0%, 100% {
         transform: scale(1);
@@ -403,12 +472,29 @@
           maxlength="500"
         ></textarea>
 
-        <!-- 送信ボタン -->
-        <button id="sendButton" class="send-button">
-          送信
-        </button>
+        <!-- 画像選択セクション -->
+        <div class="image-section">
+          <label for="imageInput" class="image-label">
+            📷 画像を選択
+          </label>
+          <input
+            type="file"
+            id="imageInput"
+            accept="image/*"
+            style="display: none;"
+          />
+          <div id="imagePreview" class="image-preview" style="display: none;">
+            <img id="previewImage" src="" alt="プレビュー" />
+            <button type="button" id="removeImage" class="remove-image-btn">×</button>
+          </div>
+          
+          <!-- 送信ボタン（画像選択の下に配置） -->
+          <button id="sendButton" class="send-button">
+            送信
+          </button>
+        </div>
 
-        <!-- キャンセルボタン（オプション） -->
+        <!-- キャンセルボタン -->
         <button id="cancelButton" class="cancel-button">
           キャンセル
         </button>
