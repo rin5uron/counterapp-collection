@@ -184,47 +184,24 @@
     }
 
     .reply-section {
-      margin-top: 32px;
-      padding: 24px;
+      margin-top: 16px;
+      padding: 16px;
       background: #FFF5F0;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-
-    /* 質問表示エリア */
-    .question-display {
-      background: white;
       border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 16px;
-      border-left: 4px solid #A8D46F;
-    }
-
-    .question-label {
-      font-size: 11px;
-      color: #95C15E;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .question-display p {
-      margin: 8px 0 0;
-      font-size: 15px;
-      color: var(--text-primary);
-      line-height: 1.5;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
     /* テキストエリア */
     .reply-section textarea {
       width: 100%;
-      padding: 16px;
+      padding: 12px;
       border: 2px solid #E8D5C4;
-      border-radius: 12px;
-      font-size: 16px;
+      border-radius: 8px;
+      font-size: 14px;
       font-family: inherit;
-      resize: vertical;
-      min-height: 100px;
+      resize: none;
+      min-height: 40px;
+      box-sizing: border-box;
     }
 
     .reply-section textarea:focus {
@@ -234,22 +211,20 @@
 
     /* 画像選択セクション */
     .image-section {
-      margin-top: 12px;
-      margin-bottom: 8px;
+      margin-top: 8px;
     }
     
     .image-section .send-button {
-      margin-top: 12px;
-      margin-bottom: 0;
+      margin-top: 8px;
     }
 
     .image-label {
       display: inline-block;
-      padding: 8px 16px;
+      padding: 6px 12px;
       background: #F5EFE7;
-      border: 2px dashed #E8D5C4;
-      border-radius: 8px;
-      font-size: 14px;
+      border: 1px dashed #E8D5C4;
+      border-radius: 6px;
+      font-size: 12px;
       color: var(--text-primary);
       cursor: pointer;
       transition: all 0.2s ease;
@@ -265,15 +240,14 @@
 
     .image-preview {
       position: relative;
-      margin-top: 12px;
-      margin-bottom: 8px;
-      border-radius: 8px;
+      margin-top: 8px;
+      border-radius: 6px;
       overflow: hidden;
     }
 
     .image-preview img {
       width: 100%;
-      max-height: 200px;
+      max-height: 100px;
       object-fit: contain;
       display: block;
     }
@@ -304,40 +278,36 @@
     /* 送信ボタン */
     .send-button {
       width: 100%;
-      padding: 16px;
+      padding: 12px;
       background: #A8D46F;
       color: white;
       border: none;
-      border-radius: 12px;
-      font-size: 16px;
+      border-radius: 8px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      position: relative;
-      z-index: 5;
     }
 
     .send-button:hover {
       background: #95C15E;
-      transform: translateY(-2px);
     }
 
     .send-button:disabled {
       background: #ccc;
       cursor: not-allowed;
-      transform: none;
     }
 
     /* キャンセルボタン */
     .cancel-button {
       width: 100%;
-      margin-top: 8px;
-      padding: 12px;
+      margin-top: 6px;
+      padding: 10px;
       background: transparent;
       color: #666;
-      border: 2px solid #E8D5C4;
-      border-radius: 12px;
-      font-size: 14px;
+      border: 1px solid #E8D5C4;
+      border-radius: 8px;
+      font-size: 13px;
       cursor: pointer;
     }
 
@@ -467,16 +437,10 @@
       <p id="specialMessage"></p>
       <div class="reply-section" id="replySection" style="display: none;">
 
-        <!-- 質問表示エリア -->
-        <div class="question-display" id="questionDisplay">
-          <span class="question-label">My Question</span>
-          <p id="questionText"></p>
-        </div>
-
         <!-- テキストエリア（1行のテキスト入力） -->
         <textarea
           id="replyInput"
-          placeholder="Your Answer..."
+          placeholder="返信を入力..."
           rows="1"
           maxlength="500"
         ></textarea>

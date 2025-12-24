@@ -99,9 +99,6 @@ mainButton.addEventListener("click", function() {
     // 現在のメッセージを送信フォームのdata属性に保存（質問内容を記録）
     replySection.setAttribute('data-question', currentMessage);
 
-    // 質問テキストを表示エリアに表示
-    document.getElementById('questionText').innerHTML = currentMessage;
-
     // レイアウトが安定するまで待ってからスクロール位置を復元
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -320,9 +317,8 @@ document.getElementById('sendButton').addEventListener('click', async function()
         selectedImageData = null;
         document.getElementById('imagePreview').style.display = 'none';
         document.getElementById('imageInput').value = '';
-        document.getElementById('questionText').innerHTML = ''; // 質問テキストもクリア
         replySection.style.display = 'none';
-        replySection.removeAttribute('data-question'); // data属性をクリア
+        replySection.removeAttribute('data-question');
       }
     } catch (error) {
       console.error('送信処理エラー:', error);
@@ -347,9 +343,8 @@ document.getElementById('cancelButton').addEventListener('click', function() {
   selectedImageData = null;
   document.getElementById('imagePreview').style.display = 'none';
   document.getElementById('imageInput').value = '';
-  document.getElementById('questionText').innerHTML = ''; // 質問テキストもクリア
   replySection.style.display = 'none';
-  replySection.removeAttribute('data-question'); // data属性をクリア
+  replySection.removeAttribute('data-question');
 });
 
 
