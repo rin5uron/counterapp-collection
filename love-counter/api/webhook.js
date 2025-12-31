@@ -168,23 +168,8 @@ async function handleEvent(event) {
     // 友達追加したユーザーのIDをログに出力
     console.log('New follower:', event.source.userId);
 
-    // ---------------------------------
-    // ウェルカムメッセージを送信
-    // ---------------------------------
-    const welcomeMessage = {
-      type: 'text',
-      text: 'ようこそ！「私のこと好き？ボット」です。\nメッセージが届いたらお知らせします。'
-    };
-
-    try {
-      // フォローイベントにも replyToken がある
-      // 友達追加と同時にメッセージを返せる
-      await client.replyMessage(event.replyToken, welcomeMessage);
-      console.log('Welcome message sent');
-    } catch (error) {
-      console.error('Error sending welcome message:', error);
-      throw error;
-    }
+    // ウェルカムメッセージはLINE公式アカウント管理画面で設定
+    // （プログラムからは送信しない）
   }
 
   // ========================================

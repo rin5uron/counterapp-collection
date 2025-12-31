@@ -6,12 +6,197 @@ This file contains what I learned through the project, organized by date.
 
 ## 📚 目次
 
+- [2025/12/30 - ウェルカムメッセージの2つの設定方法（プログラム vs LINE管理画面）](#20251230---ウェルカムメッセージの設定方法)
 - [2025/12/25 - LIFF URLとVercel URL直接アクセスの違い、権限エラー解決](#20251225---liff-urlとvercel-urlの違い)
 - [2025/12/17 - フェーズ4改善：URL構造変更、Webhook自動応答削除、100dvh、ボタン位置調整](#20251217---フェーズ4改善)
 - [2025/12/13 - pushMessage vs liff.sendMessages(), Webhook, LIFFウィンドウ, 送信フロー, Bot送信 vs ユーザー送信, 管理画面表示](#20251213---pushmessageとliffsendmessagesの違い初心者向け)
 - [2025/12/6 - LINEチャネル, プロバイダー, Messaging API, 複数ボット管理, 機能分岐設計, **Vercelビルドエラー解決**](#20251206---lineチャネルとボットの関係)
 - [2025/12/5 - SVG, ベクター画像, path, circle, text, viewBox, xmlns, 名前空間, グラデーション, 描画順序, Q (Quadratic curve), 制御点](#20251205---svgとcssの違い)
 - [2025/12/4 - innerHTML, disabled, Math.random(), Math.floor(), setTimeout(), 配列, 関数の引数, path順序, Z (Close path), SVG重なり順, **左右対称ロジック**, **曲線の滑らかさ調整**](#20251204---javascript基礎)
+
+---
+
+## 2025/12/30 - ウェルカムメッセージの設定方法
+
+### 概要
+
+友達追加時に送信される「ようこそ！私のこと好き？ボット」というウェルカムメッセージは、**プログラムで設定されている**ことを発見しました。LINE公式アカウントの管理画面でも設定できますが、プログラムからも送信可能です。
+
+---
+
+### ウェルカムメッセージの2つの設定方法
+
+#### 方法1: プログラム側で設定（現在の実装）
+
+**場所:** `api/webhook.js:166-188`
+
+```javascript
+// フォローイベントの処理
+if (event.type === 'follow') {
+  console.log('New follower:', event.source.userId);
+
+  // ウェルカムメッセージを送信
+  const welcomeMessage = {
+    type: 'text',
+    text: 'ようこそ！「私のこと好き？ボット」です。\nメッセージが届いたらお知らせします。'
+  };
+
+  await client.replyMessage(event.replyToken, welcomeMessage);
+  console.log('Welcome message sent');
+}
+```
+
+**メリット:**
+- ✅ メッセージ内容をコードで管理できる
+- ✅ カスタマイズが自由（リッチメッセージ、カードタイプなども可能）
+- ✅ 条件分岐で異なるメッセージを送信可能（例: 特定のユーザーには別のメッセージ）
+- ✅ ログを記録できる
+
+**デメリット:**
+- ❌ メッセージを変更するたびにコードを修正してデプロイが必要
+- ❌ 非エンジニアが編集しにくい
+
+---
+
+#### 方法2: LINE公式アカウント管理画面で設定
+
+**設定場所:**
+```
+LINE Official Account Manager
+→ 設定
+→ 応答設定
+→ あいさつメッセージ
+→ ON にして内容を編集
+```
+
+**メリット:**
+- ✅ 管理画面から簡単に編集できる
+- ✅ デプロイ不要で即座に変更が反映される
+- ✅ 非エンジニアでも編集可能
+
+**デメリット:**
+- ❌ テキストメッセージのみ（リッチメッセージは管理画面で設定可能だが、プログラムほど自由ではない）
+- ❌ 条件分岐ができない（全ユーザーに同じメッセージ）
+
+---
+
+### どちらを使うべきか？
+
+| 用途 | 推奨方法 |
+|------|----------|
+| **シンプルなテキストメッセージ** | LINE管理画面 |
+| **リッチメッセージ、カードタイプ** | プログラム |
+| **ユーザーごとに異なるメッセージ** | プログラム |
+| **頻繁に変更する内容** | LINE管理画面 |
+| **複雑な条件分岐** | プログラム |
+
+---
+
+### このプロジェクトでの選択
+
+**現状:** プログラム側で設定
+
+**今後の方針:**
+- シンプルなあいさつメッセージ → LINE管理画面に移行
+- リッチメッセージ、カードタイプは引き続きプログラムで実装
+
+**変更方法:**
+1. `api/webhook.js` のウェルカムメッセージ送信部分を削除
+2. LINE公式アカウント管理画面で「あいさつメッセージ」を設定
+
+---
+
+### 追加実装アイデア
+
+#### カードタイプメッセージ（Flex Message）の追加
+
+**Flex Message とは？**
+- LINE独自のリッチメッセージ形式
+- JSONで柔軟にレイアウトを定義できる
+- カード形式、カルーセル、ボタン付きメッセージなどが作れる
+
+**実装例: ウェルカムメッセージをカードタイプに**
+
+```javascript
+// api/webhook.js
+if (event.type === 'follow') {
+  const welcomeFlexMessage = {
+    type: 'flex',
+    altText: 'ようこそ！',
+    contents: {
+      type: 'bubble',
+      hero: {
+        type: 'image',
+        url: 'https://your-image-url.com/welcome.png',
+        size: 'full',
+        aspectRatio: '20:13',
+        aspectMode: 'cover'
+      },
+      body: {
+        type: 'box',
+        layout: 'vertical',
+        contents: [
+          {
+            type: 'text',
+            text: 'ようこそ！',
+            weight: 'bold',
+            size: 'xl'
+          },
+          {
+            type: 'text',
+            text: '私のこと好き？ボットです',
+            size: 'sm',
+            color: '#999999',
+            margin: 'md'
+          }
+        ]
+      },
+      footer: {
+        type: 'box',
+        layout: 'vertical',
+        contents: [
+          {
+            type: 'button',
+            action: {
+              type: 'uri',
+              label: 'アプリを開く',
+              uri: 'https://liff.line.me/YOUR_LIFF_ID'
+            },
+            style: 'primary'
+          }
+        ]
+      }
+    }
+  };
+
+  await client.replyMessage(event.replyToken, welcomeFlexMessage);
+}
+```
+
+**メリット:**
+- 🎨 視覚的に魅力的
+- 📱 ボタンでアプリへの導線を作れる
+- 🖼️ 画像を入れてブランディング
+
+**参考:**
+- [Flex Message Simulator](https://developers.line.biz/flex-simulator/)
+- [Flex Message 公式ドキュメント](https://developers.line.biz/ja/docs/messaging-api/using-flex-messages/)
+
+---
+
+### まとめ（2025/12/30）
+
+1. **ウェルカムメッセージは2つの方法で設定できる**
+   - プログラム（webhook.js）
+   - LINE公式アカウント管理画面
+
+2. **それぞれの役割分担**
+   - シンプルなメッセージ → LINE管理画面
+   - リッチメッセージ → プログラム
+
+3. **今後の実装アイデア**
+   - Flex Message（カードタイプ）でウェルカムメッセージを魅力的に
+   - ユーザーごとにパーソナライズしたメッセージ
 
 ---
 
